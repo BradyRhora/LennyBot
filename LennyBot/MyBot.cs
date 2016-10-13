@@ -42,7 +42,8 @@ namespace LennyBot
             {
                 x.PrefixChar = '.';
                 x.AllowMentionPrefix = true;
-                x.HelpMode = HelpMode.Public;
+                x.HelpMode = HelpMode.Public;
+
             });
             commands = discord.GetService<CommandService>();
             
@@ -71,7 +72,7 @@ namespace LennyBot
             {
                 try
                 {
-                    await discord.Connect("MjMwNTA4MTgwNzkzMzI3NjE2.CtsrCA.Fx_zlOGWLhnlJVbURYTQAI1LqKk", TokenType.Bot);
+                    await discord.Connect("NICE TRY", TokenType.Bot);
                 }
                 catch (System.Net.WebException)
                 {
