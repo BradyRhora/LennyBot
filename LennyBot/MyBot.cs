@@ -26,13 +26,13 @@ namespace LennyBot
         static DateTime lotteryEnd;
         bool lotteryOn = false;
         static bool LotteryFin = false;
-        
+
 
         static Properties.Settings set = new Properties.Settings();
 
         public MyBot()
         {
-            
+
             discord = new DiscordClient(x =>
             {
                 x.LogLevel = LogSeverity.Info;
@@ -46,7 +46,7 @@ namespace LennyBot
 
             });
             commands = discord.GetService<CommandService>();
-            
+
 
             #region Commands
             helloCommand();
@@ -72,20 +72,20 @@ namespace LennyBot
             {
                 try
                 {
-                    await discord.Connect("NICE TRY", TokenType.Bot);
+                    await discord.Connect(@private.token, TokenType.Bot);
                 }
                 catch (System.Net.WebException)
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Unable to connect to Discord! Check your connection!");
-                    
+
                 }
             });
-            
-            
+
+
         }
 
-        
+
 
         private void helloCommand()
         {
@@ -107,7 +107,7 @@ namespace LennyBot
                 .Parameter("Text", ParameterType.Unparsed)
                 .Do(async (e) =>
                 {
-                    if (checkOwned(e.User, 2,e))
+                    if (checkOwned(e.User, 2, e))
                     {
                         if (input == null) await e.Channel.SendMessage(e.GetArg("Text"));
                         else await e.Channel.SendMessage(input);
@@ -119,10 +119,10 @@ namespace LennyBot
         {
             commands.CreateCommand("sus")
                 .Description("*Sus*")
-                .Alias(new string[] { "s"})
+                .Alias(new string[] { "s" })
                 .Do(async (e) =>
                 {
-                    if (checkOwned(e.User, 3,e))
+                    if (checkOwned(e.User, 3, e))
                     {
                         await e.Channel.SendMessage("*sus :^)*");
                     }
@@ -137,7 +137,7 @@ namespace LennyBot
                 .Parameter("Question", ParameterType.Unparsed)
                 .Do(async (e) =>
                 {
-                    if (checkOwned(e.User, 4,e))
+                    if (checkOwned(e.User, 4, e))
                     {
                         qNum = rdm.Next(6);
                         if (qNum == 1)
@@ -162,8 +162,8 @@ namespace LennyBot
                         }
                     }
                 });
-                 
-                                       
+
+
         }
 
         private void rollCommand()
@@ -171,10 +171,10 @@ namespace LennyBot
             commands.CreateCommand("roll")
                 .Description("Rolls a number between one and <num>")
                 .Alias(new string[] { "r" })
-                .Parameter("num",ParameterType.Required)
+                .Parameter("num", ParameterType.Required)
                 .Do(async (e) =>
                {
-                   if (checkOwned(e.User, 5,e))
+                   if (checkOwned(e.User, 5, e))
                    {
                        int roll = rdm.Next(Convert.ToInt32(e.GetArg("num")));
                        await e.Channel.SendMessage(Convert.ToString(roll + 1));
@@ -189,7 +189,7 @@ namespace LennyBot
                 .Alias(new string[] { "mem", "m" })
                 .Do(async (e) =>
                 {
-                    if (checkOwned(e.User, 6,e))
+                    if (checkOwned(e.User, 6, e))
                     {
                         int picRoll = rdm.Next(77);
                         await e.Channel.SendFile($"pics/{picRoll}.png");
@@ -203,7 +203,7 @@ namespace LennyBot
                 .Description("Get shook")
                 .Do(async (e) =>
                 {
-                    if (checkOwned(e.User, 7,e))
+                    if (checkOwned(e.User, 7, e))
                     {
                         await e.Channel.SendFile(@"gifs\Shook.gif");
                     }
@@ -218,7 +218,7 @@ namespace LennyBot
                 .Parameter("Text", ParameterType.Unparsed)
                 .Do(async (e) =>
                {
-                   if (checkOwned(e.User, 8,e))
+                   if (checkOwned(e.User, 8, e))
                    {
                        string input = e.GetArg("Text");
 
@@ -285,12 +285,12 @@ namespace LennyBot
                 .Parameter("game", ParameterType.Unparsed)
                 .Do(async (e) =>
                {
-                   if (checkOwned(e.User, 9,e))
+                   if (checkOwned(e.User, 9, e))
                    {
                        await e.Channel.SendMessage($"Game updated to {e.GetArg("game")} ");
                        discord.SetGame(e.GetArg("game"));
                    }
-                   
+
                });
 
         }
@@ -300,15 +300,15 @@ namespace LennyBot
         {
             bool battling = false;
             fighter = null;
-            
+
 
             commands.CreateCommand("duel")
-                .Alias(new string[] { "d"})
+                .Alias(new string[] { "d" })
                 .Description("Fight me for Lenny Coins!")
-                .Parameter("choice",ParameterType.Unparsed)
+                .Parameter("choice", ParameterType.Unparsed)
                 .Do(async (e) =>
                {
-                   if (checkOwned(e.User, 10,e))
+                   if (checkOwned(e.User, 10, e))
                    {
                        if (!battling)
                        {
@@ -425,7 +425,7 @@ namespace LennyBot
 
             if (person == "Lenny")
             {
-                     if (lenHealth <= 0) HealthBar = "[          ]";
+                if (lenHealth <= 0) HealthBar = "[          ]";
                 else if (lenHealth < 10) HealthBar = "[|         ]";
                 else if (lenHealth < 20) HealthBar = "[||        ]";
                 else if (lenHealth < 30) HealthBar = "[|||       ]";
@@ -435,11 +435,11 @@ namespace LennyBot
                 else if (lenHealth < 70) HealthBar = "[|||||||   ]";
                 else if (lenHealth < 80) HealthBar = "[||||||||  ]";
                 else if (lenHealth < 90) HealthBar = "[||||||||| ]";
-                                    else HealthBar = "[||||||||||]";
+                else HealthBar = "[||||||||||]";
             }
             else if (person == "Player")
             {
-                     if (userHealth <= 0) HealthBar = "[          ]";
+                if (userHealth <= 0) HealthBar = "[          ]";
                 else if (userHealth < 10) HealthBar = "[|         ]";
                 else if (userHealth < 20) HealthBar = "[||        ]";
                 else if (userHealth < 30) HealthBar = "[|||       ]";
@@ -449,7 +449,7 @@ namespace LennyBot
                 else if (userHealth < 70) HealthBar = "[|||||||   ]";
                 else if (userHealth < 80) HealthBar = "[||||||||  ]";
                 else if (userHealth < 90) HealthBar = "[||||||||| ]";
-                                     else HealthBar = "[||||||||||]";
+                else HealthBar = "[||||||||||]";
             }
 
             return HealthBar;
@@ -467,7 +467,7 @@ namespace LennyBot
 
                    for (int i = 0; i > -1; i++)
                    {
-                       if (set.users[i] == "0") 
+                       if (set.users[i] == "0")
                        {
                            set.users[i] = e.User.Name;
                            set.coins[i] = 10;
@@ -484,43 +484,80 @@ namespace LennyBot
                        }
                    }
 
-                   
+
                });
         }
 
         private void profileCommand()
         {
             int uNum = -1;
+            User uProf;
 
             commands.CreateCommand("profile")
                 .Description("Displays a users profile")
                 .Parameter("user", ParameterType.Unparsed)
                 .Do(async (e) =>
                {
-                   //if (e.GetArg("user") == "")
-                   //{
-                       User uProf = e.User;
-                   //}
-                   //else
-                   //{
-                   //    User uProf = e.Channel.Users.                   }
-
-                   for (int i = 0; i > -1; i++)
+                   if (e.GetArg("user") == "")
                    {
-                       if (set.users[i] == uProf.Name)
+                       uProf = e.User;
+
+                       for (int i = 0; i > -1; i++)
                        {
-                           uNum = i;
-                           break;
+                           if (set.users[i] == uProf.Name)
+                           {
+                               uNum = i;
+                               break;
+                           }
+                           else if (set.users[i] == uProf.Nickname)
+                           {
+                               uNum = i;
+                               break;
+                           }
+                           else if (set.users[i] == "0") break;
+
                        }
-                       else if (set.users[i] == "0") break;
-                           
+
+                       await e.Channel.SendMessage(uProf.Name + Environment.NewLine +
+                           $"Lenny Coins: {set.coins[uNum]}" + Environment.NewLine +
+                           $"Owned commands: {set.owned[uNum]}");
+
                    }
+                   else
+                   {
+                       uProf = e.Server.FindUsers(e.GetArg("user"), false).FirstOrDefault();
 
-                   if (uNum == -1) await e.Channel.SendMessage("User not found! If the user is *you*, please register using '.reg'.");
-                   else await e.Channel.SendMessage(uProf.Name + Environment.NewLine +
-                       $"Lenny Coins: {set.coins[uNum]}" + Environment.NewLine +
-                       $"Owned commands: {set.owned[uNum]}");
+                       if (uProf == null)
+                       {
+                           await e.Channel.SendMessage("User not found! If the user is *you*, please register using '.reg'.");
+                       }
+                       else
+                       {
+                           for (int i = 0; i > -1; i++)
+                           {
+                               if (set.users[i] == uProf.Name)
+                               {
+                                   uNum = i;
+                                   break;
+                               }
+                               else if (set.users[i] == uProf.Nickname)
+                               {
+                                   uNum = i;
+                                   break;
+                               }
+                               else if (set.users[i] == "0") break;
 
+                           }
+
+                           await e.Channel.SendMessage(uProf.Name + Environment.NewLine +
+                               $"Lenny Coins: {set.coins[uNum]}" + Environment.NewLine +
+                               $"Owned commands: {set.owned[uNum]}");
+
+                       }
+                   }
+    
+
+                   
                    uNum = -1;
                });
             
@@ -542,12 +579,26 @@ namespace LennyBot
                        if (set.users[i] == "0") break;
                        Console.WriteLine("USER: " + set.users[i]);
                        Console.WriteLine("COINS: " + set.coins[i]);
+                       Console.WriteLine("OWNED COMMANDS: " + set.owned[i]);
                        Console.WriteLine("------------------");
                    }
                    Console.WriteLine("##################");
-                   Console.WriteLine($"Set game: {discord.CurrentUser.CurrentGame}");
+                   Console.WriteLine($"Set game: {e.Server.FindUsers("( ͡° ͜ʖ ͡°)").FirstOrDefault().CurrentGame}");
                    Console.WriteLine("###OTHER THINGS###");
                    Console.WriteLine($"State: {discord.State} || Status: {discord.Status}");
+                   Console.WriteLine("#####LEADERS#####");
+                   string mostCoins = set.users[0];
+                   int mostCoinsInt = set.coins[0];
+                   for (int i = 0;i<100;i++)
+                   {
+                       if (set.coins[i] > mostCoinsInt) 
+                       {
+                           mostCoins = set.users[i];
+                           mostCoinsInt = set.coins[i];
+                       }
+                   }
+                   Console.WriteLine($"Most Lenny Coins: {mostCoins} with {mostCoinsInt} Lenny Coins!");
+                   
                });
         }
 
@@ -581,22 +632,35 @@ namespace LennyBot
             commands.CreateCommand("lottery")
                 .Alias(new string[] { "lot" })
                 .Description("Users enter, then the winner recieves the prize money!")
-                .Parameter("arg",ParameterType.Required)
-                .Parameter("join, info, create",ParameterType.Multiple)
+                .Parameter("arg", ParameterType.Optional)
+                .Parameter("join, info, create", ParameterType.Multiple)
                 .Do(async (e) =>
                {
-                   if (checkOwned(e.User, 11,e))
+                   if (checkOwned(e.User, 11, e))
                    {
                        if (e.GetArg("arg") == "join")
                        {
-                           await e.Channel.SendMessage("testJ");
+                           if (!lotteryOn)
+                           {
+                               await e.Channel.SendMessage("Sorry! No lottery on right now. Check later!");
+                           }
+                           else
+                           {
+
+                               await e.Channel.SendMessage("Successfully joined lottery!");
+                           }
+
+
+
+
                        }
                        else if (e.GetArg("arg") == "info")
                        {
                            if (lotteryOn)
                            {
-                               await e.Channel.SendMessage("testI");
+                               await e.Channel.SendMessage($"The current lottery ends at {lotteryEnd}! Join so you can win!{Environment.NewLine}*You miss 100% of the shots you don't take.* **-Sidney Crosby I think?**");
                            }
+                           else await e.Channel.SendMessage("No lottery happening right now! Sorry!");
                        }
                        else if (e.GetArg("arg") == "create")
                        {
@@ -611,6 +675,13 @@ namespace LennyBot
                                await e.Channel.SendMessage($"Lottery started! Ends at {lotteryEnd}!");
                                lotteryOn = true;
                            }
+                       }
+                       else if (e.GetArg("arg") == "")
+                       {
+                           if (lotteryOn) await e.Channel.SendMessage($"Hey, {e.User.Nickname}! There's a lottery on right now! It ends at {lotteryEnd}.{Environment.NewLine}Use .lottery join to join for 10 Lenny Coins!");
+                           else await e.Channel.SendMessage($"Hey, {e.User.Nickname}! Sorry, no lottery on right now. Check again later or wait for an announcement!");
+
+
                        }
                    }
                });
@@ -640,11 +711,10 @@ namespace LennyBot
                            "[8] .talk command! - 8 Lenny coins!" + Environment.NewLine +
                            "[9] .setGame command! - 20 Lenny coins!" + Environment.NewLine +
                            "[10] .duel command! - 50 Lenny coins!" + Environment.NewLine +
-                           "[11] .lottery command! - 25 Lenny coins!");
+                           "[11] .lottery command! - 5 Lenny coins!");
                    }
                    else
                    {
-                       id = Convert.ToInt32(e.GetArg("item"));
 
                        if (e.GetArg("item") == "1")
                        {
@@ -688,9 +758,11 @@ namespace LennyBot
                        }
                        else if (e.GetArg("item") == "11")
                        {
-                           price = 25;
+                           price = 5;
                        }
                        else await e.Channel.SendMessage("Please enter a valid item number!");
+
+                       id = Convert.ToInt32(e.GetArg("item"));
 
                        if (price != 0)
                        {
@@ -700,11 +772,19 @@ namespace LennyBot
                                {
                                    if (set.coins[i] >= price)
                                    {
-                                       set.owned[i] += $" {id} ";
-                                       set.coins[i] -= price;
-                                       await e.Channel.SendMessage($"Your purchase was successful! You now have {set.coins[i]} Lenny coins!");
-                                       set.Save();
-                                       break;
+                                       if (set.owned[i].Contains(Convert.ToString(id)))
+                                       {
+                                           await e.Channel.SendMessage("You already own this command!");
+                                           break;
+                                       }
+                                       else
+                                       {
+                                           set.owned[i] += $" {id} ";
+                                           set.coins[i] -= price;
+                                           await e.Channel.SendMessage($"Your purchase was successful! You now have {set.coins[i]} Lenny coins!");
+                                           set.Save();
+                                           break;
+                                       }
                                    }
                                    else
                                    {
@@ -712,7 +792,11 @@ namespace LennyBot
                                        break;
                                    }
                                }
-                               await e.Channel.SendMessage("Are you sure you're registered? Type .reg to register now!");
+                               else if (set.users[i] == "0")
+                               {
+                                   await e.Channel.SendMessage("Are you sure you're registered? Type .reg to register now!");
+                                   break;
+                               }
                            }
                            
                        }
@@ -728,11 +812,12 @@ namespace LennyBot
                 .Parameter("user", ParameterType.Required)
                 .Do(async (e) =>
                 {
-                    if (e.User != e.Server.FindUsers("Brady", false)) await e.Channel.SendMessage("Nice try! ( ͡° ͜ʖ ͡°) Only Brady can do this.");
+                    
+                    if (e.User != e.Server.FindUsers("brady0423", false).FirstOrDefault()) await e.Channel.SendMessage("Nice try! ( ͡° ͜ʖ ͡°) Only Brady can do this.");
                     else
                     {
                         int amount = Convert.ToInt32(e.GetArg("amount"));
-                        User reciever = (User)e.Server.FindUsers(e.GetArg("user"), false);
+                        User reciever = e.Server.FindUsers(e.GetArg("user"), false).FirstOrDefault();
                         bool recieved = false;
 
                         for (int i = 0; i < 100; i++)
@@ -809,9 +894,23 @@ namespace LennyBot
 //            Console.WriteLine("Dicks");
         }
 
+        private int GetUserID(User user)
+        {
+            for (int i = 0; i<100;i++)
+            {
+                if (set.users[i] == user.Name || set.users[i] == user.Nickname)
+                {
+                    return i;
+                    break;
+                }
+            }
+            return -1;
+        }
+
         private void Log(Object sender, LogMessageEventArgs e)
         {
             Console.WriteLine(e.Message);
+            
         }
 
     }
@@ -819,8 +918,8 @@ namespace LennyBot
 
 
 //  REMEMBER: 
-//          Test .coin command. Make sure input order is correct and figure that shiz out yo
+//          Finish .lottery
 //          Finish .duel system (X) Incomplete, add more random events and choices
-//          Add more to 'Profiles' (( ͡° ͜ʖ ͡°), etc)
+//          Add more to 'Profiles' (role, etc) 
 //          Add option to check profile of other user using .profile - Possibly using e.Server.FindUsers(user, bool);
 //              Keep bein' cool ( ͡° ͜ʖ ͡°)
