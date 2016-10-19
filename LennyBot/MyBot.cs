@@ -66,6 +66,7 @@ namespace LennyBot
             lotteryCommand();
             buyCommand();
             coinCommand();
+            kkkCommand();
             #endregion
 
             discord.ExecuteAndWait(async () =>
@@ -646,7 +647,7 @@ namespace LennyBot
                            }
                            else
                            {
-
+                               
                                await e.Channel.SendMessage("Successfully joined lottery!");
                            }
 
@@ -711,7 +712,8 @@ namespace LennyBot
                            "[8] .talk command! - 8 Lenny coins!" + Environment.NewLine +
                            "[9] .setGame command! - 20 Lenny coins!" + Environment.NewLine +
                            "[10] .duel command! - 50 Lenny coins!" + Environment.NewLine +
-                           "[11] .lottery command! - 5 Lenny coins!");
+                           "[11] .lottery command! - 5 Lenny coins!" + Environment.NewLine +
+                           "[12] .kkk command! - 5 Lenny coins!");
                    }
                    else
                    {
@@ -757,6 +759,10 @@ namespace LennyBot
                            price = 50;
                        }
                        else if (e.GetArg("item") == "11")
+                       {
+                           price = 5;
+                       }
+                       else if (e.GetArg("item") == "12")
                        {
                            price = 5;
                        }
@@ -838,6 +844,22 @@ namespace LennyBot
                 
         }
 
+        private void kkkCommand()
+        {
+            commands.CreateCommand("kkk")
+                .Description("GO BACK TO AFRICA, ZAIM!")
+                .Do(async (e) =>
+               {
+                   if (checkOwned(e.User, 12, e))
+                   {
+                       await e.Channel.SendFile("commandPics/kkk.jpg");
+                   }
+               });
+
+
+            
+        }
+
 
 //      Command ID's:
 //
@@ -852,6 +874,7 @@ namespace LennyBot
 //      setGame - 9
 //      duel - 10
 //      lottery - 11
+//      kkk - 12
 //
 // IF COMMAND IS NOT ON LIST, USERS HAVE IT BY DEFAULT.
 
@@ -910,7 +933,6 @@ namespace LennyBot
         private void Log(Object sender, LogMessageEventArgs e)
         {
             Console.WriteLine(e.Message);
-            
         }
 
     }
@@ -920,6 +942,5 @@ namespace LennyBot
 //  REMEMBER: 
 //          Finish .lottery
 //          Finish .duel system (X) Incomplete, add more random events and choices
-//          Add more to 'Profiles' (role, etc) 
-//          Add option to check profile of other user using .profile - Possibly using e.Server.FindUsers(user, bool);
+//          Add more to 'Profiles' (role, etc)
 //              Keep bein' cool ( ͡° ͜ʖ ͡°)
