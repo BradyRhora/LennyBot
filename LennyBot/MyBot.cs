@@ -941,6 +941,8 @@ namespace LennyBot
 
 //  REMEMBER: 
 //          Finish .lottery
+//          Actually work on this you slut
+//          give people more reasons to use him
 //          Finish .duel system (X) Incomplete, add more random events and choices
 //          Add more to 'Profiles' (role, etc)
 //              Keep bein' cool ( ͡° ͜ʖ ͡°)
