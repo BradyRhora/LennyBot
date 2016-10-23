@@ -130,8 +130,59 @@ namespace LennyBot.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("<?xml version=\"1.0\" encoding=\"utf-16\"?>\r\n<ArrayOfBoolean xmlns:xsi=\"http://www.w3" +
+            ".org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">\r\n  <" +
+            "boolean>false</boolean>\r\n  <boolean>false</boolean>\r\n  <boolean>false</boolean>\r" +
+            "\n  <boolean>false</boolean>\r\n  <boolean>false</boolean>\r\n  <boolean>false</boole" +
+            "an>\r\n  <boolean>false</boolean>\r\n  <boolean>false</boolean>\r\n  <boolean>false</b" +
+            "oolean>\r\n  <boolean>false</boolean>\r\n  <boolean>false</boolean>\r\n  <boolean>fals" +
+            "e</boolean>\r\n  <boolean>false</boolean>\r\n  <boolean>false</boolean>\r\n  <boolean>" +
+            "false</boolean>\r\n  <boolean>false</boolean>\r\n  <boolean>false</boolean>\r\n  <bool" +
+            "ean>false</boolean>\r\n  <boolean>false</boolean>\r\n  <boolean>false</boolean>\r\n  <" +
+            "boolean>false</boolean>\r\n  <boolean>false</boolean>\r\n  <boolean>false</boolean>\r" +
+            "\n  <boolean>false</boolean>\r\n  <boolean>false</boolean>\r\n  <boolean>false</boole" +
+            "an>\r\n  <boolean>false</boolean>\r\n  <boolean>false</boolean>\r\n  <boolean>false</b" +
+            "oolean>\r\n  <boolean>false</boolean>\r\n  <boolean>false</boolean>\r\n  <boolean>fals" +
+            "e</boolean>\r\n  <boolean>false</boolean>\r\n  <boolean>false</boolean>\r\n  <boolean>" +
+            "false</boolean>\r\n  <boolean>false</boolean>\r\n  <boolean>false</boolean>\r\n  <bool" +
+            "ean>false</boolean>\r\n  <boolean>false</boolean>\r\n  <boolean>false</boolean>\r\n  <" +
+            "boolean>false</boolean>\r\n  <boolean>false</boolean>\r\n  <boolean>false</boolean>\r" +
+            "\n  <boolean>false</boolean>\r\n  <boolean>false</boolean>\r\n  <boolean>false</boole" +
+            "an>\r\n  <boolean>false</boolean>\r\n  <boolean>false</boolean>\r\n  <boolean>false</b" +
+            "oolean>\r\n  <boolean>false</boolean>\r\n  <boolean>false</boolean>\r\n</ArrayOfBoolea" +
+            "n>")]
+        public bool[] inLottery {
+            get {
+                return ((bool[])(this["inLottery"]));
+            }
+            set {
+                this["inLottery"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute(@"<?xml version=""1.0"" encoding=""utf-16""?>
 <ArrayOfInt xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"">
+  <int>0</int>
+  <int>0</int>
+  <int>0</int>
+  <int>0</int>
+  <int>0</int>
+  <int>0</int>
+  <int>0</int>
+  <int>0</int>
+  <int>0</int>
+  <int>0</int>
+  <int>0</int>
+  <int>0</int>
+  <int>0</int>
+  <int>0</int>
+  <int>0</int>
+  <int>0</int>
+  <int>0</int>
+  <int>0</int>
+  <int>0</int>
   <int>0</int>
   <int>0</int>
   <int>0</int>
@@ -172,38 +223,6 @@ namespace LennyBot.Properties {
             }
             set {
                 this["coins"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("<?xml version=\"1.0\" encoding=\"utf-16\"?>\r\n<ArrayOfBoolean xmlns:xsi=\"http://www.w3" +
-            ".org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">\r\n  <" +
-            "boolean>false</boolean>\r\n  <boolean>false</boolean>\r\n  <boolean>false</boolean>\r" +
-            "\n  <boolean>false</boolean>\r\n  <boolean>false</boolean>\r\n  <boolean>false</boole" +
-            "an>\r\n  <boolean>false</boolean>\r\n  <boolean>false</boolean>\r\n  <boolean>false</b" +
-            "oolean>\r\n  <boolean>false</boolean>\r\n  <boolean>false</boolean>\r\n  <boolean>fals" +
-            "e</boolean>\r\n  <boolean>false</boolean>\r\n  <boolean>false</boolean>\r\n  <boolean>" +
-            "false</boolean>\r\n  <boolean>false</boolean>\r\n  <boolean>false</boolean>\r\n  <bool" +
-            "ean>false</boolean>\r\n  <boolean>false</boolean>\r\n  <boolean>false</boolean>\r\n  <" +
-            "boolean>false</boolean>\r\n  <boolean>false</boolean>\r\n  <boolean>false</boolean>\r" +
-            "\n  <boolean>false</boolean>\r\n  <boolean>false</boolean>\r\n  <boolean>false</boole" +
-            "an>\r\n  <boolean>false</boolean>\r\n  <boolean>false</boolean>\r\n  <boolean>false</b" +
-            "oolean>\r\n  <boolean>false</boolean>\r\n  <boolean>false</boolean>\r\n  <boolean>fals" +
-            "e</boolean>\r\n  <boolean>false</boolean>\r\n  <boolean>false</boolean>\r\n  <boolean>" +
-            "false</boolean>\r\n  <boolean>false</boolean>\r\n  <boolean>false</boolean>\r\n  <bool" +
-            "ean>false</boolean>\r\n  <boolean>false</boolean>\r\n  <boolean>false</boolean>\r\n  <" +
-            "boolean>false</boolean>\r\n  <boolean>false</boolean>\r\n  <boolean>false</boolean>\r" +
-            "\n  <boolean>false</boolean>\r\n  <boolean>false</boolean>\r\n  <boolean>false</boole" +
-            "an>\r\n  <boolean>false</boolean>\r\n  <boolean>false</boolean>\r\n  <boolean>false</b" +
-            "oolean>\r\n  <boolean>false</boolean>\r\n  <boolean>false</boolean>\r\n</ArrayOfBoolea" +
-            "n>")]
-        public bool[] inLottery {
-            get {
-                return ((bool[])(this["inLottery"]));
-            }
-            set {
-                this["inLottery"] = value;
             }
         }
     }

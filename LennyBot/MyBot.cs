@@ -7,7 +7,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
-
 namespace LennyBot
 {
     class MyBot
@@ -38,8 +37,10 @@ namespace LennyBot
         static DateTime lennySleep2 = new DateTime(dateNow.Year, dateNow.Month, dateNow.Day, 21, 59, 0);
         static DateTime lennySleep3 = new DateTime(dateNow.Year, dateNow.Month, dateNow.Day, 21, 59, 50);
 
+        
+        bool[] creatingRole = new bool[100];
         //static Channel general = discord.GetChannel(195670713183633408);
-        static int alertLevel = 0;
+        //static int alertLevel = 0;
         static Properties.Settings set = new Properties.Settings();
 
         public MyBot()
@@ -77,6 +78,7 @@ namespace LennyBot
             buyCommand();
             coinCommand();
             kkkCommand();
+            roleCommand();
             #endregion
 
             discord.ExecuteAndWait(async () =>
@@ -588,7 +590,7 @@ namespace LennyBot
                    for (int i = 0; i <= 200; i++)
                    {
                        if (set.users[i] == "0") break;
-                       Console.WriteLine("USER: " + set.users[i]);
+                       Console.WriteLine("USER: " + set.users[i] + $"[{i}]");
                        Console.WriteLine("COINS: " + set.coins[i]);
                        Console.WriteLine("OWNED COMMANDS: " + set.owned[i]);
                        Console.WriteLine("------------------");
@@ -721,11 +723,11 @@ namespace LennyBot
                 .Do(async (e) =>
                {
                    int price = 0;
-                   int id = 0;
+                   string id = "0";
 
                    if (e.GetArg("item") == "")
                    {
-                       await e.Channel.SendMessage("Here's what you can buy! ( ͡° ͜ʖ ͡°) (Use .buy [#]!)" + Environment.NewLine + Environment.NewLine +
+                       await e.Channel.SendMessage("Here's what you can buy! ( ͡° ͜ʖ ͡°) (Use .buy [item id#]! No brackets!)" + Environment.NewLine + Environment.NewLine +
                            "[1] .hello command! - 1 Lenny coin!" + Environment.NewLine +
                            "[2] .say command! - 2 Lenny coins!" + Environment.NewLine +
                            "[3] .sus command! - 3 Lenny coins!" + Environment.NewLine +
@@ -737,7 +739,9 @@ namespace LennyBot
                            "[9] .setGame command! - 20 Lenny coins!" + Environment.NewLine +
                            "[10] .duel command! - 50 Lenny coins!" + Environment.NewLine +
                            "[11] .lottery command! - 5 Lenny coins!" + Environment.NewLine +
-                           "[12] .kkk command! - 5 Lenny coins!");
+                           "[12] .kkk command! - 5 Lenny coins!" + Environment.NewLine +
+                           "----------------Non-Commands-------------" + Environment.NewLine +
+                           "[01] Custom Role! - 200 Lenny coins! (Your own role with your choice of name and colour!)");
                    }
                    else
                    {
@@ -790,9 +794,13 @@ namespace LennyBot
                        {
                            price = 5;
                        }
+                       else if (e.GetArg("item") == "01")
+                       {
+                           price = 200;
+                       }
                        else await e.Channel.SendMessage("Please enter a valid item number!");
 
-                       id = Convert.ToInt32(e.GetArg("item"));
+                       id = e.GetArg("item");
 
                        if (price != 0)
                        {
@@ -802,14 +810,22 @@ namespace LennyBot
                                {
                                    if (set.coins[i] >= price)
                                    {
-                                       if (set.owned[i].Contains(" " + Convert.ToString(id)))
+                                       if (set.owned[i].Contains(" " + id))
                                        {
                                            await e.Channel.SendMessage("You already own this command!");
                                            break;
                                        }
                                        else
                                        {
-                                           set.owned[i] += $" {id} ";
+                                           if (id == "01")
+                                           {
+                                               await e.Channel.SendMessage("Use the .role command to create your role, " + e.User.Name + "!");
+                                               creatingRole[GetUserID(e.User)] = true;
+                                           }
+                                           else
+                                           {
+                                               set.owned[i] += $" {id} ";
+                                           }
                                            set.coins[i] -= price;
                                            await e.Channel.SendMessage($"Your purchase was successful! You now have {set.coins[i]} Lenny coins!");
                                            set.Save();
@@ -884,26 +900,54 @@ namespace LennyBot
 
         }
 
+        private void roleCommand()
+        {
+            commands.CreateCommand("role")
+                .Description("Used after buying a role to create and edit it!")
+                .Parameter("arg", ParameterType.Optional)
+                .Parameter("name",ParameterType.Optional)
+                .Parameter("colour",ParameterType.Optional)
+                .Do(async (e) =>
+               {
+                   if (e.GetArg("arg") == "")
+                   {
+                       await e.Channel.SendMessage($"Hey, {e.User.Name}! Use this command to add/edit your role. (Parameters: [create (name) (colour)])");
+                   }
+                   else if (e.GetArg("arg") == "create")
+                   {
+                       if (creatingRole[GetUserID(e.User)] == true)
+                       {
+                           //Color color = e.GetArg("colour");
+                           //await e.Server.CreateRole(name: e.GetArg("name"), color: e.GetArg("colour"));
+                       }
+                       else
+                       {
+                           await e.Channel.SendMessage("In order to create a role, you must buy it from the '.buy' shop!");
+                       }
+                   }
+               });
+        }
 
-        //      Command ID's:
+        //      Command ID's:        |      Other Item ID's
+        //                           |
+        //      hello - 1            |     upgrade role - 01
+        //      say - 2              |
+        //      sus - 3              |
+        //      ask - 4              |
+        //      roll - 5             |
+        //      meme - 6             |
+        //      shook - 7            |
+        //      talk - 8             |
+        //      setGame - 9          |
+        //      duel - 10            |
+        //      lottery - 11         |
+        //      kkk - 12             |
         //
-        //      hello - 1
-        //      say - 2
-        //      sus - 3
-        //      ask - 4
-        //      roll - 5
-        //      meme - 6
-        //      shook - 7
-        //      talk - 8
-        //      setGame - 9
-        //      duel - 10
-        //      lottery - 11
-        //      kkk - 12
-        //
-        // IF COMMAND IS NOT ON LIST, USERS HAVE IT BY DEFAULT.
+        // IF COMMAND IS NOT ON LIST, USERS HAVE IT BY DEFAULT (Or it just can't be bought).
 
 
 
+        #region Cool Functions
 
         private bool checkOwned(User user, int id, CommandEventArgs e)
         {
@@ -966,10 +1010,10 @@ namespace LennyBot
             }
             #endregion
 
-            //#region Sleep
+            #region Sleep ( ͡° ʖ̯ ͡°)
             //if (dateNow.DayOfWeek == DayOfWeek.Friday || dateNow.DayOfWeek == DayOfWeek.Saturday || dateNow.DayOfWeek == DayOfWeek.Sunday)
             //{
-
+            //
             //}
             //else
             //{
@@ -994,7 +1038,7 @@ namespace LennyBot
             //        discord.Disconnect(); //Test this.
             //    }
             //}
-            //#endregion
+            #endregion
 
             set.Save();
             GC.Collect();
@@ -1016,6 +1060,8 @@ namespace LennyBot
             }
             return -1;
         }
+
+        #endregion
 
         private void Log(Object sender, LogMessageEventArgs e)
         {
