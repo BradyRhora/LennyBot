@@ -225,5 +225,17 @@ namespace LennyBot.Properties {
                 this["coins"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("( ͡° ͜ʖ ͡°)")]
+        public string setGame {
+            get {
+                return ((string)(this["setGame"]));
+            }
+            set {
+                this["setGame"] = value;
+            }
+        }
     }
 }

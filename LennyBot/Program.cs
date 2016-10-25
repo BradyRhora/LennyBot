@@ -10,7 +10,16 @@ namespace LennyBot
     {
         static void Main(string[] args)
         {
-            MyBot bot = new MyBot();
+            try
+            {
+                MyBot bot = new MyBot();
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Error starting bot!");
+                Console.ReadLine();
+            }
+            
 
         }
     }

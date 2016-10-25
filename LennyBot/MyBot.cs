@@ -36,8 +36,14 @@ namespace LennyBot
         static DateTime lennySleep = new DateTime(dateNow.Year, dateNow.Month, dateNow.Day, 21, 55, 0);
         static DateTime lennySleep2 = new DateTime(dateNow.Year, dateNow.Month, dateNow.Day, 21, 59, 0);
         static DateTime lennySleep3 = new DateTime(dateNow.Year, dateNow.Month, dateNow.Day, 21, 59, 50);
+        #region Bee Movie Vars
+        static TimeSpan sendDelay;
+        static DateTime sendTime;
+        static bool/*[]*/ sendingLines /*= new bool[5]*/;
+        static Channel/*[]*/ beeChannel /*= new Channel[5]*/;
+        static string[] beeScript = File.ReadAllLines("TextFiles/TheBeeMovieScript.txt");
+        #endregion
 
-        
         bool[] creatingRole = new bool[100];
         //static Channel general = discord.GetChannel(195670713183633408);
         //static int alertLevel = 0;
@@ -79,6 +85,8 @@ namespace LennyBot
             coinCommand();
             kkkCommand();
             roleCommand();
+            beeMovieCommand();
+            pollCommand();
             #endregion
 
             discord.ExecuteAndWait(async () =>
@@ -95,7 +103,7 @@ namespace LennyBot
                 }
             });
 
-
+            
         }
 
 
@@ -294,7 +302,7 @@ namespace LennyBot
         {
             commands.CreateCommand("setGame")
                 .Alias(new string[] { "sg" })
-                .Description("Sets my 'Playing <game>'")
+                .Description("Sets the 'Playing <game>'")
                 .Parameter("game", ParameterType.Unparsed)
                 .Do(async (e) =>
                {
@@ -302,6 +310,7 @@ namespace LennyBot
                    {
                        await e.Channel.SendMessage($"Game updated to {e.GetArg("game")} ");
                        discord.SetGame(e.GetArg("game"));
+                       set.setGame = e.GetArg("game");
                    }
 
                });
@@ -486,7 +495,7 @@ namespace LennyBot
                            set.coins[i] = 10;
                            set.owned[i] = set.users[i];
                            set.Save();
-
+                           Console.WriteLine($"{e.User.Name} has registered!");
                            await e.Channel.SendMessage("Here's 10 Lenny Coins to start you off!");
                            break;
                        }
@@ -728,76 +737,40 @@ namespace LennyBot
                    if (e.GetArg("item") == "")
                    {
                        await e.Channel.SendMessage("Here's what you can buy! ( ͡° ͜ʖ ͡°) (Use .buy [item id#]! No brackets!)" + Environment.NewLine + Environment.NewLine +
-                           "[1] .hello command! - 1 Lenny coin!" + Environment.NewLine +
-                           "[2] .say command! - 2 Lenny coins!" + Environment.NewLine +
-                           "[3] .sus command! - 3 Lenny coins!" + Environment.NewLine +
-                           "[4] .ask command! - 5 Lenny coins!" + Environment.NewLine +
-                           "[5] .roll comand! - 5 Lenny coins!" + Environment.NewLine +
-                           "[6] .meme command! - 15 Lenny coins!" + Environment.NewLine +
-                           "[7] .shook command! - 5 Lenny coins!" + Environment.NewLine +
-                           "[8] .talk command! - 8 Lenny coins!" + Environment.NewLine +
-                           "[9] .setGame command! - 20 Lenny coins!" + Environment.NewLine +
-                           "[10] .duel command! - 50 Lenny coins!" + Environment.NewLine +
-                           "[11] .lottery command! - 5 Lenny coins!" + Environment.NewLine +
-                           "[12] .kkk command! - 5 Lenny coins!" + Environment.NewLine +
+                           "[1] .hello command! 1 Lenny coin!" + Environment.NewLine +
+                           "[2] .say command! 2 Lenny coins!" + Environment.NewLine +
+                           "[3] .sus command! 3 Lenny coins!" + Environment.NewLine +
+                           "[4] .ask command! 5 Lenny coins!" + Environment.NewLine +
+                           "[5] .roll comand! 5 Lenny coins!" + Environment.NewLine +
+                           "[6] .meme command! 15 Lenny coins!" + Environment.NewLine +
+                           "[7] .shook command! 5 Lenny coins!" + Environment.NewLine +
+                           "[8] .talk command! 8 Lenny coins!" + Environment.NewLine +
+                           "[9] .setGame command! 20 Lenny coins!" + Environment.NewLine +
+                           "[10] .duel command! 50 Lenny coins!" + Environment.NewLine +
+                           "[11] .lottery command! 5 Lenny coins!" + Environment.NewLine +
+                           "[12] .kkk command! 5 Lenny coins!" + Environment.NewLine +
+                           "[13] .beeMovie command! 1000 Lenny coins!" + Environment.NewLine +
                            "----------------Non-Commands-------------" + Environment.NewLine +
-                           "[01] Custom Role! - 200 Lenny coins! (Your own role with your choice of name and colour!)");
+                           "[01] Custom Role! 200 Lenny coins! (Your own role with your choice of name and colour!)");
                    }
                    else
                    {
 
-                       if (e.GetArg("item") == "1")
-                       {
-                           price = 1;
-                       }
-                       else if (e.GetArg("item") == "2")
-                       {
-                           price = 2;
-                       }
-                       else if (e.GetArg("item") == "3")
-                       {
-                           price = 3;
-                       }
-                       else if (e.GetArg("item") == "4")
-                       {
-                           price = 5;
-                       }
-                       else if (e.GetArg("item") == "5")
-                       {
-                           price = 5;
-                       }
-                       else if (e.GetArg("item") == "6")
-                       {
-                           price = 15;
-                       }
-                       else if (e.GetArg("item") == "7")
-                       {
-                           price = 5;
-                       }
-                       else if (e.GetArg("item") == "8")
-                       {
-                           price = 8;
-                       }
-                       else if (e.GetArg("item") == "9")
-                       {
-                           price = 20;
-                       }
-                       else if (e.GetArg("item") == "10")
-                       {
-                           price = 50;
-                       }
-                       else if (e.GetArg("item") == "11")
-                       {
-                           price = 5;
-                       }
-                       else if (e.GetArg("item") == "12")
-                       {
-                           price = 5;
-                       }
-                       else if (e.GetArg("item") == "01")
-                       {
-                           price = 200;
-                       }
+                       if (e.GetArg("item") == "1") price = 1;
+                       else if (e.GetArg("item") == "2") price = 2;
+                       else if (e.GetArg("item") == "3") price = 3;
+                       else if (e.GetArg("item") == "4") price = 5;
+                       else if (e.GetArg("item") == "5") price = 5;
+                       else if (e.GetArg("item") == "6") price = 15;
+                       else if (e.GetArg("item") == "7") price = 5;
+                       else if (e.GetArg("item") == "8") price = 8;
+                       else if (e.GetArg("item") == "9") price = 20;
+                       else if (e.GetArg("item") == "10") price = 50;
+                       else if (e.GetArg("item") == "11") price = 5;
+                       else if (e.GetArg("item") == "12") price = 5;
+                       else if (e.GetArg("item") == "13") price = 1000;
+                       else if (e.GetArg("item") == "01") price = 200;
+
                        else await e.Channel.SendMessage("Please enter a valid item number!");
 
                        id = e.GetArg("item");
@@ -926,22 +899,58 @@ namespace LennyBot
                        }
                    }
                });
+        } //Not actually done oops
+
+        private void beeMovieCommand()
+        {
+            commands.CreateCommand("beeMovie")
+                .Alias(new string[] { "bm" })
+                .Description("Sends random lines from BeeMovieScript.txt at random intervals in this chat.")
+                .Parameter("add / del",ParameterType.Multiple)
+                .Do(async (e) =>
+               {
+                   if (checkOwned(e.User, 13, e))
+                   {
+                       if (!sendingLines)
+                       {
+                           await e.Channel.SendMessage("You'll regret this. ( ͡° ʖ̯ ͡°)");
+                           sendDelay = new TimeSpan(0,0,1);
+                           sendTime = DateTime.Now + sendDelay;
+                           beeChannel = e.Channel;
+                           sendingLines = true;
+                       }
+                       else
+                       {
+                           await e.Channel.SendMessage("You've saved us. ( ͡° ͜ʖ ͡°)");
+                           sendingLines = false;
+                       }
+
+                   }
+               });
         }
 
-        //      Command ID's:        |      Other Item ID's
-        //                           |
-        //      hello - 1            |     upgrade role - 01
-        //      say - 2              |
-        //      sus - 3              |
-        //      ask - 4              |
-        //      roll - 5             |
-        //      meme - 6             |
-        //      shook - 7            |
-        //      talk - 8             |
-        //      setGame - 9          |
-        //      duel - 10            |
-        //      lottery - 11         |
-        //      kkk - 12             |
+        private void pollCommand()
+        {
+
+        }
+
+
+        //      Command ID's:      |      Other Item ID's
+        //                         |
+        //      hello 1            |       upgrade role 01
+        //      say 2              |
+        //      sus 3              |
+        //      ask 4              |
+        //      roll 5             |
+        //      meme 6             |
+        //      shook 7            |
+        //      talk 8             |
+        //      setGame 9          |
+        //      duel 10            |
+        //      lottery 11         |
+        //      kkk 12             |
+        //      beeMovie 13        |
+        //      poll 14            |
         //
         // IF COMMAND IS NOT ON LIST, USERS HAVE IT BY DEFAULT (Or it just can't be bought).
 
@@ -1040,6 +1049,19 @@ namespace LennyBot
             //}
             #endregion
 
+            #region Bee Movie
+            if (sendingLines)
+            {
+                if (DateTime.Now > sendTime)
+                {
+                    beeChannel.SendMessage(beeScript[rdm.Next(beeScript.Length)]);
+                    sendDelay = new TimeSpan(rdm.Next(1), rdm.Next(60), rdm.Next(60));
+                    sendTime = DateTime.Now + sendDelay;
+                }
+            }
+
+
+            #endregion
             set.Save();
             GC.Collect();
         }
@@ -1066,6 +1088,7 @@ namespace LennyBot
         private void Log(Object sender, LogMessageEventArgs e)
         {
             Console.WriteLine(e.Message);
+            discord.SetGame(set.setGame);
         }
 
     }
