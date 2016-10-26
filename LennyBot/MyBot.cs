@@ -32,10 +32,17 @@ namespace LennyBot
         int lotteryEntry = 0;
         static Channel lotChannel;
         #endregion
+        #region Sleep Times
         static DateTime dateNow = DateTime.Now;
         static DateTime lennySleep = new DateTime(dateNow.Year, dateNow.Month, dateNow.Day, 21, 55, 0);
         static DateTime lennySleep2 = new DateTime(dateNow.Year, dateNow.Month, dateNow.Day, 21, 59, 0);
         static DateTime lennySleep3 = new DateTime(dateNow.Year, dateNow.Month, dateNow.Day, 21, 59, 50);
+        #endregion
+        #region Time Spans
+        TimeSpan fiveMin = new TimeSpan(0, 5, 0);
+        TimeSpan oneHour = new TimeSpan(1, 0, 0);
+        TimeSpan oneMin = new TimeSpan(0, 1, 0);
+        #endregion
         #region Bee Movie Vars
         static TimeSpan sendDelay;
         static DateTime sendTime;
@@ -43,7 +50,18 @@ namespace LennyBot
         static Channel/*[]*/ beeChannel /*= new Channel[5]*/;
         static string[] beeScript = File.ReadAllLines("TextFiles/TheBeeMovieScript.txt");
         #endregion
-
+        #region Poll Vars
+        static string[] pollOption = new string[6];
+        static int[] pollOptionVotes = new int[6];
+        static int itemNum;
+        string poll;
+        static bool pollOn = false;
+        static TimeSpan pollDuration;
+        static DateTime pollEnd;
+        static Channel pollChannel;
+        static string pollTitle;
+        static int pollTotalVotes;
+        #endregion
         bool[] creatingRole = new bool[100];
         //static Channel general = discord.GetChannel(195670713183633408);
         //static int alertLevel = 0;
@@ -750,6 +768,7 @@ namespace LennyBot
                            "[11] .lottery command! 5 Lenny coins!" + Environment.NewLine +
                            "[12] .kkk command! 5 Lenny coins!" + Environment.NewLine +
                            "[13] .beeMovie command! 1000 Lenny coins!" + Environment.NewLine +
+                           "[14] .poll command! 200 Lenny coins! Buying this give you the ablity to make polls, you can already vote!" + Environment.NewLine +
                            "----------------Non-Commands-------------" + Environment.NewLine +
                            "[01] Custom Role! 200 Lenny coins! (Your own role with your choice of name and colour!)");
                    }
@@ -769,6 +788,7 @@ namespace LennyBot
                        else if (e.GetArg("item") == "11") price = 5;
                        else if (e.GetArg("item") == "12") price = 5;
                        else if (e.GetArg("item") == "13") price = 1000;
+                       else if (e.GetArg("item") == "14") price = 2000;
                        else if (e.GetArg("item") == "01") price = 200;
 
                        else await e.Channel.SendMessage("Please enter a valid item number!");
@@ -827,8 +847,8 @@ namespace LennyBot
         {
             commands.CreateCommand("coin")
                 .Description("Used by Brady to give people Lenny coins!")
-                .Parameter("amount", ParameterType.Required)
                 .Parameter("user", ParameterType.Required)
+                .Parameter("amount", ParameterType.Required)
                 .Do(async (e) =>
                 {
 
@@ -931,7 +951,69 @@ namespace LennyBot
 
         private void pollCommand()
         {
+            commands.CreateCommand("poll")
+                .Description("Creates a poll that users can vote on!")
+                .Parameter("create/vote", ParameterType.Optional)
+                .Parameter("title/choice", ParameterType.Optional)
+                .Parameter("time",ParameterType.Optional)
+                .Parameter("option1", ParameterType.Optional)
+                .Parameter("option2", ParameterType.Optional)
+                .Parameter("option3", ParameterType.Optional)
+                .Parameter("option4", ParameterType.Optional)
+                .Parameter("option5", ParameterType.Optional)
+                .Do(async (e) =>
+               {
+                   if (e.GetArg("create/vote") == "create")
+                   {
+                       if (checkOwned(e.User, 14, e))
+                       {
+                           if (!pollOn)
+                           {
+                               pollChannel = e.Channel;
+                               pollOn = true;
+                               pollDuration = new TimeSpan(0, Convert.ToInt32(e.GetArg("time")), 0);
+                               pollEnd = DateTime.Now + pollDuration;
+                               for (int i = 1; i < 6; i++)
+                               {
+                                   if (e.GetArg("option" + i) == "") break;
+                                   else
+                                   {
+                                       itemNum = i;
+                                       pollOption[i] = e.GetArg("option" + i);
+                                   }
+                               }
+                               pollTitle = e.GetArg("title/choice");
+                               poll = "POLL: " + pollTitle;
 
+                               for (int i = 1; i < itemNum + 1; i++)
+                               {
+                                   poll += Environment.NewLine + $"`[{i}] {pollOption[i]}`";
+                               }
+                               poll += Environment.NewLine + "Vote now using '.poll vote [#]'!";
+
+                               await e.Channel.SendMessage(poll);
+                           }
+                           else
+                           {
+                               await e.Channel.SendMessage("There is already a poll on!");
+                           }
+                       }
+                   }
+                   else if (e.GetArg("create/vote") == "vote")
+                   {
+                       if (Convert.ToInt32(e.GetArg("title/choice")) > itemNum)
+                       {
+                           await e.Channel.SendMessage("Please input a valid choice number!");
+                       }
+                       else
+                       pollOptionVotes[Convert.ToInt32(e.GetArg("title/choice"))]++;
+                       pollTotalVotes++;
+                       displayPoll();
+                   }
+                   else await e.Channel.SendMessage($"----------------------------Usage---------------------------- {Environment.NewLine} Creating: `.poll create [title] [time (min)] [option1] [option2] ... [option5]` {Environment.NewLine} Seperate items with spaces! If items have spaces in them, use quotations. {Environment.NewLine}" +
+                       "Voting: `.poll vote [option#]`" + Environment.NewLine + 
+                       "-----------------------CURRENT POLL----------------------" + Environment.NewLine + displayPoll());
+               });
         }
 
 
@@ -985,6 +1067,39 @@ namespace LennyBot
                 e.Channel.SendMessage("You're not registered! Make sure to register using .reg!");
                 return false;
             }
+        }
+
+        private static string displayPoll()
+        {
+            string poll = "POLL: " + pollTitle;
+
+            for (int i = 1; i<=itemNum; i++)
+            {
+                poll += Environment.NewLine + makeBar(pollOptionVotes[i], pollTotalVotes) + $" [{i}] " + pollOption[i];
+            }
+            if (pollOn) poll += Environment.NewLine + "Vote now using '.poll vote [#]'!";
+
+
+            return poll;
+        }
+
+        private static string makeBar(decimal number, decimal total)
+        {
+            decimal percentage = (number / total) * 10;
+            int num = Convert.ToInt32(Math.Round(percentage));
+            string bar = "[";
+            for (int i = 1; i<=num; i++)
+            {
+                bar += "|";
+            }
+
+            int n = 1;
+            while (n++ <= (10 - num))
+            {
+                bar += " ";
+            }
+            bar += "]";
+            return bar;
         }
 
         private static void TimerCallback(object o)
@@ -1062,6 +1177,28 @@ namespace LennyBot
 
 
             #endregion
+
+            #region Poll
+            if (pollOn && DateTime.Now > pollEnd)
+            {
+                int highestVotes = 0;
+                int highestVote = -1;
+                for (int i = 1; i <= 5; i++)
+                {
+                    if (pollOptionVotes[i] > highestVotes)
+                    {
+                        highestVotes = pollOptionVotes[i];
+                        highestVote = i;
+                    }
+                }
+                pollChannel.SendMessage("The poll has ended!" + Environment.NewLine +
+                    $"The winner is: {pollOption[highestVote]} with {highestVotes} votes!");
+                pollOn = false;
+                
+                pollChannel.SendMessage(displayPoll());
+            }
+            #endregion
+
             set.Save();
             GC.Collect();
         }
