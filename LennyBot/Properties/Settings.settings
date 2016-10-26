@@ -205,5 +205,11 @@
     <Setting Name="setGame" Type="System.String" Scope="User">
       <Value Profile="(Default)">( ͡° ͜ʖ ͡°)</Value>
     </Setting>
+    <Setting Name="bmOn" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="beeChannel" Type="Discord.Channel" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
   </Settings>
 </SettingsFile>

@@ -28,7 +28,7 @@ namespace LennyBot
         static DateTime lotteryEnd;
         static bool lotteryOn = false;
         static int lotteryPrize = 0;
-        int lotteryMultiplier = 0; //do somethin
+        //int lotteryMultiplier = 0; //do somethin
         int lotteryEntry = 0;
         static Channel lotChannel;
         #endregion
@@ -46,13 +46,13 @@ namespace LennyBot
         #region Bee Movie Vars
         static TimeSpan sendDelay;
         static DateTime sendTime;
-        static bool/*[]*/ sendingLines /*= new bool[5]*/;
-        static Channel/*[]*/ beeChannel /*= new Channel[5]*/;
+
         static string[] beeScript = File.ReadAllLines("TextFiles/TheBeeMovieScript.txt");
         #endregion
         #region Poll Vars
         static string[] pollOption = new string[6];
         static int[] pollOptionVotes = new int[6];
+        bool[] pollUserVoted = new bool[100];
         static int itemNum;
         string poll;
         static bool pollOn = false;
@@ -63,8 +63,6 @@ namespace LennyBot
         static int pollTotalVotes;
         #endregion
         bool[] creatingRole = new bool[100];
-        //static Channel general = discord.GetChannel(195670713183633408);
-        //static int alertLevel = 0;
         static Properties.Settings set = new Properties.Settings();
 
         public MyBot()
@@ -931,18 +929,18 @@ namespace LennyBot
                {
                    if (checkOwned(e.User, 13, e))
                    {
-                       if (!sendingLines)
+                       if (!set.bmOn)
                        {
                            await e.Channel.SendMessage("You'll regret this. ( ͡° ʖ̯ ͡°)");
                            sendDelay = new TimeSpan(0,0,1);
                            sendTime = DateTime.Now + sendDelay;
-                           beeChannel = e.Channel;
-                           sendingLines = true;
+                           set.beeChannel = e.Channel;
+                           set.bmOn = true;
                        }
                        else
                        {
                            await e.Channel.SendMessage("You've saved us. ( ͡° ͜ʖ ͡°)");
-                           sendingLines = false;
+                           set.bmOn = false;
                        }
 
                    }
@@ -969,7 +967,20 @@ namespace LennyBot
                        {
                            if (!pollOn)
                            {
-                               pollChannel = e.Channel;
+                               #region Reset Poll Values
+                               for (int i = 1; i <= 5; i++)
+                               {
+                                   pollOption[i] = null;
+                                   pollOptionVotes[i] = 0;
+                                   pollTotalVotes = 0;
+                               }
+
+                               for (int i = 0; i < 100; i++)
+                               {
+                                   pollUserVoted[i] = false;
+                               }
+                                    #endregion
+                                    pollChannel = e.Channel;
                                pollOn = true;
                                pollDuration = new TimeSpan(0, Convert.ToInt32(e.GetArg("time")), 0);
                                pollEnd = DateTime.Now + pollDuration;
@@ -1006,9 +1017,19 @@ namespace LennyBot
                            await e.Channel.SendMessage("Please input a valid choice number!");
                        }
                        else
-                       pollOptionVotes[Convert.ToInt32(e.GetArg("title/choice"))]++;
-                       pollTotalVotes++;
-                       displayPoll();
+                       {
+                           if (pollUserVoted[GetUserID(e.User)])
+                           {
+                               await e.Channel.SendMessage("You have already voted in this poll!");
+                           }          
+                           else
+                           {
+                               pollUserVoted[GetUserID(e.User)] = true;
+                               pollOptionVotes[Convert.ToInt32(e.GetArg("title/choice"))]++;
+                               pollTotalVotes++;
+                               await e.Channel.SendMessage(displayPoll());
+                           }
+                       }
                    }
                    else await e.Channel.SendMessage($"----------------------------Usage---------------------------- {Environment.NewLine} Creating: `.poll create [title] [time (min)] [option1] [option2] ... [option5]` {Environment.NewLine} Seperate items with spaces! If items have spaces in them, use quotations. {Environment.NewLine}" +
                        "Voting: `.poll vote [option#]`" + Environment.NewLine + 
@@ -1071,13 +1092,13 @@ namespace LennyBot
 
         private static string displayPoll()
         {
-            string poll = "POLL: " + pollTitle;
+            string poll = "```POLL: " + pollTitle;
 
             for (int i = 1; i<=itemNum; i++)
             {
                 poll += Environment.NewLine + makeBar(pollOptionVotes[i], pollTotalVotes) + $" [{i}] " + pollOption[i];
             }
-            if (pollOn) poll += Environment.NewLine + "Vote now using '.poll vote [#]'!";
+            if (pollOn) poll += Environment.NewLine + "Vote now using '.poll vote [#]'!```";
 
 
             return poll;
@@ -1165,11 +1186,11 @@ namespace LennyBot
             #endregion
 
             #region Bee Movie
-            if (sendingLines)
+            if (set.bmOn)
             {
                 if (DateTime.Now > sendTime)
                 {
-                    beeChannel.SendMessage(beeScript[rdm.Next(beeScript.Length)]);
+                    set.beeChannel.SendMessage(beeScript[rdm.Next(beeScript.Length)]);
                     sendDelay = new TimeSpan(rdm.Next(1), rdm.Next(60), rdm.Next(60));
                     sendTime = DateTime.Now + sendDelay;
                 }
@@ -1192,10 +1213,10 @@ namespace LennyBot
                     }
                 }
                 pollChannel.SendMessage("The poll has ended!" + Environment.NewLine +
-                    $"The winner is: {pollOption[highestVote]} with {highestVotes} votes!");
+                    $"The winner is: `{pollOption[highestVote]}` with `{highestVotes}` votes!");
                 pollOn = false;
                 
-                pollChannel.SendMessage(displayPoll());
+                pollChannel.SendMessage(displayPoll() + "```");
             }
             #endregion
 

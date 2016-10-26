@@ -237,5 +237,28 @@ namespace LennyBot.Properties {
                 this["setGame"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool bmOn {
+            get {
+                return ((bool)(this["bmOn"]));
+            }
+            set {
+                this["bmOn"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public global::Discord.Channel beeChannel {
+            get {
+                return ((global::Discord.Channel)(this["beeChannel"]));
+            }
+            set {
+                this["beeChannel"] = value;
+            }
+        }
     }
 }
