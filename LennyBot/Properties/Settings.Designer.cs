@@ -260,5 +260,59 @@ namespace LennyBot.Properties {
                 this["beeChannel"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("<?xml version=\"1.0\" encoding=\"utf-16\"?>\r\n<ArrayOfInt xmlns:xsi=\"http://www.w3.org" +
+            "/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">\r\n  <int>" +
+            "0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>" +
+            "0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>" +
+            "0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>" +
+            "0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>" +
+            "0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>" +
+            "0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>" +
+            "0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>" +
+            "0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>" +
+            "0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>" +
+            "0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>" +
+            "0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>" +
+            "0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>" +
+            "0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>" +
+            "0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>" +
+            "0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>" +
+            "0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>" +
+            "0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>" +
+            "0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>" +
+            "0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>" +
+            "0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>" +
+            "0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>" +
+            "0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>" +
+            "0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>" +
+            "0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>" +
+            "0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>" +
+            "0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>" +
+            "0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>" +
+            "0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>" +
+            "0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>" +
+            "0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>" +
+            "0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>" +
+            "0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>" +
+            "0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>" +
+            "0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>" +
+            "0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>" +
+            "0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>" +
+            "0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>" +
+            "0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>" +
+            "0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>" +
+            "0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>" +
+            "0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n  <int>0</int>\r\n</ArrayOfInt>")]
+        public int[] memeSubmitter {
+            get {
+                return ((int[])(this["memeSubmitter"]));
+            }
+            set {
+                this["memeSubmitter"] = value;
+            }
+        }
     }
 }

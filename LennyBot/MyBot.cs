@@ -2,16 +2,20 @@
 using Discord.Commands;
 
 using System;
+using System.Net;
 using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using Google;
+
 namespace LennyBot
 {
     class MyBot
     {
         Timer t = new Timer(TimerCallback, null, 0, 2000);
+        WebClient webClient = new WebClient();
         static DiscordClient discord;
         static CommandService commands;
         static Random rdm = new Random();
@@ -46,7 +50,8 @@ namespace LennyBot
         #region Bee Movie Vars
         static TimeSpan sendDelay;
         static DateTime sendTime;
-
+        static Channel beeChannel;
+        static bool bmOn = false;
         static string[] beeScript = File.ReadAllLines("TextFiles/TheBeeMovieScript.txt");
         #endregion
         #region Poll Vars
@@ -64,6 +69,9 @@ namespace LennyBot
         #endregion
         bool[] creatingRole = new bool[100];
         static Properties.Settings set = new Properties.Settings();
+        Google.API.Search.GimageSearchClient imageClient = new Google.API.Search.GimageSearchClient("http://www.google.com");
+
+
 
         public MyBot()
         {
@@ -87,7 +95,7 @@ namespace LennyBot
             susCommand();
             askCommand();
             rollCommand();
-            memeCommand();
+            bradyBunchMemeCommand();
             shookCommand();
             talkCommand();
             setGameCommand();
@@ -103,6 +111,11 @@ namespace LennyBot
             roleCommand();
             beeMovieCommand();
             pollCommand();
+            submitMemeCommand();
+            memeCommand();
+            giveCoinsCommand();
+            eggBongoCommand();
+            imageCommand();
             #endregion
 
             discord.ExecuteAndWait(async () =>
@@ -219,18 +232,22 @@ namespace LennyBot
                });
         }
 
-        private void memeCommand()
+        private void bradyBunchMemeCommand()
         {
-            commands.CreateCommand("meme")
-                .Description("Picks a random meme and sends it")
-                .Alias(new string[] { "mem", "m" })
+            commands.CreateCommand("bradyBunchMeme")
+                .Description("Picks a random meme and sends it. (Brady Bunch edition!)")
+                .Alias(new string[] { "bbmem", "bbm" })
                 .Do(async (e) =>
                 {
-                    if (checkOwned(e.User, 6, e))
+                    if (e.Server.Id == 195670713183633408)
                     {
-                        int picRoll = rdm.Next(77);
-                        await e.Channel.SendFile($"pics/{picRoll}.png");
+                        if (checkOwned(e.User, 6, e))
+                        {
+                            int picRoll = rdm.Next(77);
+                            await e.Channel.SendFile($"bbmpics/{picRoll}.png");
+                        }
                     }
+                    else await e.Channel.SendMessage("This can only be used in the `Brady Bunch` server!");
                 });
         }
 
@@ -929,23 +946,23 @@ namespace LennyBot
                {
                    if (checkOwned(e.User, 13, e))
                    {
-                       if (!set.bmOn)
+                       if (/*!set.*/bmOn == false)
                        {
                            await e.Channel.SendMessage("You'll regret this. ( ͡° ʖ̯ ͡°)");
                            sendDelay = new TimeSpan(0,0,1);
                            sendTime = DateTime.Now + sendDelay;
-                           set.beeChannel = e.Channel;
-                           set.bmOn = true;
+                           beeChannel = e.Channel;
+                           /*set.*/bmOn = true;
                        }
                        else
                        {
                            await e.Channel.SendMessage("You've saved us. ( ͡° ͜ʖ ͡°)");
-                           set.bmOn = false;
+                           /*set.*/bmOn = false;
                        }
 
                    }
                });
-        }
+        } //fix
 
         private void pollCommand()
         {
@@ -1037,7 +1054,175 @@ namespace LennyBot
                });
         }
 
+        private void memeCommand()
+        {
+            commands.CreateCommand("meme")
+                .Description("Sends a random meme! LOL ECKSEE I'M SO RANDOM!")
+                .Alias(new string[] { "mem", "m" })
+                .Do(async (ecc) =>
+               {
 
+               });
+        } //finish
+
+        private void submitMemeCommand()
+        {
+            commands.CreateCommand("submitMeme")
+                .Alias(new string[] { "sm" })
+                .Description("Submits a meme for Lenny to review, then offers you Lenny Coins for them!")
+                .Parameter("view",ParameterType.Optional) //need parameter to allow penders
+                .Parameter("next / accept / deny",ParameterType.Optional)
+                .Parameter("offer", ParameterType.Optional)
+                .Do(async (e) =>
+                {
+                    User submitter = null;
+                    int offer = 0;
+                    int memeNumber = 0;
+                    if (e.GetArg("view") == "view")
+                    {
+                        
+                        if (e.GetArg("next / accept / deny") == null)
+                        {
+                            if (e.User != e.Server.FindUsers("brady0423", false).FirstOrDefault())
+                            {
+                                await e.Channel.SendMessage("*Only the memelord can view and approve of submitted memes!");
+                            }
+
+                            else
+                            {
+                                List<int> memeChecks = new List<int>();
+                                for (int i = 0; i <= 1000; i++)
+                                {
+                                    if (!File.Exists($"pendingMemes/meme{i}.jpg")) memeChecks.Add(i);
+                                }
+
+                                await e.Channel.SendMessage($"Sending pending meme {memeNumber}...");
+                                await e.Channel.SendFile($@"C:\Users\Owner\Documents\Visual Studio 2015\Projects\LennyBot\LennyBot\pendingMemes\meme{memeNumber}.jpg");
+                            }
+                        }
+                        else if (e.GetArg("next / accept / deny") == "next")
+                        {
+                            memeNumber++;
+                            await e.Channel.SendMessage($"Sending pending meme {memeNumber}...");
+                            await e.Channel.SendFile($@"C:\Users\Owner\Documents\Visual Studio 2015\Projects\LennyBot\LennyBot\pendingMemes\meme{memeNumber}.jpg");
+                        }
+                        else if (e.GetArg("next / accept / deny") == "accept")
+                        {
+                            offer = Convert.ToInt32(e.GetArg("offer"));
+                            submitter = e.Server.FindUsers(set.users[set.memeSubmitter[memeNumber]]).FirstOrDefault();
+                            await e.Channel.SendMessage($"@{submitter}, you have been offered {offer} lenny coins for this meme. Do you accept? `.sm y` or `.sm n`.");
+                        }
+                    }
+                    else if (e.GetArg("view") == "y")
+                    {
+                        if (e.User == submitter)
+                        {
+                            await e.Channel.SendMessage($"Thanks! You've been given {offer} Lenny coins and the meme has been added to .meme!");
+                            set.coins[set.memeSubmitter[memeNumber]] += offer;
+                            //Make it actually get added to the meme command
+                        }
+                        else await e.Channel.SendMessage($"Only {submitter} can accept this offer!");
+                    }
+                    else if (e.GetArg("view") == "n")
+                    {
+                        if (e.User == submitter)
+                        {
+                            await e.Channel.SendMessage($"Offer denied.");
+                        }
+                        else await e.Channel.SendMessage($"Only {submitter} can deny this offer!");
+                    }
+                    else
+                    {
+                        string fileName = null;
+                        if (e.Message.Attachments == null) await e.Channel.SendMessage("You must include an image meme with your message!");
+                        else
+                        {
+                            Message.Attachment meme;
+                            meme = e.Message.Attachments[0];
+
+                            for (int i = 0; i <= 1000; i++)
+                            {
+                                if (!File.Exists($@"C:\Users\Owner\Documents\Visual Studio 2015\Projects\LennyBot\LennyBot\pendingMemes\meme{i}.jpg"))
+                                {
+                                    fileName = $"meme{i}.jpg";
+                                    set.memeSubmitter[i] = GetUserID(e.User);
+                                    break;
+                                }
+
+                            }
+                            webClient.DownloadFile(meme.Url, $@"C:\Users\Owner\Documents\Visual Studio 2015\Projects\LennyBot\LennyBot\pendingMemes\{fileName}");
+                            Console.WriteLine($"Meme submitted by {e.User.Name}!");
+                            await e.Channel.SendMessage($"Meme recieved! Thanks, {e.User.Nickname}!");
+                        }
+                    }
+
+                });
+        }
+
+        private void giveCoinsCommand()
+        {
+            commands.CreateCommand("giveCoins")
+                .Description("Give Lenny Coins to another user!")
+                .Alias(new string[] { "gc" })
+                .Parameter("user", ParameterType.Required)
+                .Parameter("amount", ParameterType.Required)
+                .Do(async (e) =>
+               {
+                   int amount = Convert.ToInt32(e.GetArg("amount"));
+                   User reciever = e.Server.FindUsers(e.GetArg("user")).FirstOrDefault();
+                   User giver = e.User;
+                   if (reciever == null) await e.Channel.SendMessage("User not found!");
+                   else if (reciever == giver) await e.Channel.SendMessage("You can't give yourself coins!");
+                   else
+                   {
+                       if (amount < 1) await e.Channel.SendMessage("Please enter a number above 0!");
+                       else if (amount > set.coins[GetUserID(e.User)]) await e.Channel.SendMessage("You don't have that many coins!");
+                       else
+                       {
+                           int rID = GetUserID(reciever);
+                           int gID = GetUserID(giver);
+
+                           set.coins[rID] += amount;
+                           set.coins[gID] -= amount;
+
+                           await e.Channel.SendMessage($"Transfer successful! {amount} coins sent from {giver.Nickname} to {reciever.Nickname}!");
+                       }
+                   }
+               });
+        }
+
+        private void eggBongoCommand()
+        {
+            commands.CreateCommand("eggBongo")
+                .Alias(new string[] { "eb" })
+                .Description("ONLY THOSE WORTHY MAY USE THIS.")
+                .Parameter("user", ParameterType.Optional)
+                .Do(async (e) =>
+               {
+                   //if (e.GetArg("user") == null)
+                   //{
+                       if (e.User.Id == 153966208968949760)
+                       {
+                           await e.Channel.SendFile("commandPics/eggbongo.jpg");
+                       }
+                       else await e.Channel.SendMessage("NO");
+                   //}
+               });
+        }
+
+        private void imageCommand()
+        {
+            commands.CreateCommand("image")
+                .Description("Searches for an image then sends it into the chat!")
+                .Parameter("search", ParameterType.Required)
+                .Do(async (e) =>
+               {
+                   string search = e.GetArg("search");
+                   await e.Channel.SendMessage($"Searching for {search}...");
+
+
+               });
+        }
         //      Command ID's:      |      Other Item ID's
         //                         |
         //      hello 1            |       upgrade role 01
@@ -1186,11 +1371,11 @@ namespace LennyBot
             #endregion
 
             #region Bee Movie
-            if (set.bmOn)
+            if (/*set.*/bmOn)
             {
                 if (DateTime.Now > sendTime)
                 {
-                    set.beeChannel.SendMessage(beeScript[rdm.Next(beeScript.Length)]);
+                    beeChannel.SendMessage(beeScript[rdm.Next(beeScript.Length)]);
                     sendDelay = new TimeSpan(rdm.Next(1), rdm.Next(60), rdm.Next(60));
                     sendTime = DateTime.Now + sendDelay;
                 }
@@ -1247,7 +1432,8 @@ namespace LennyBot
         {
             Console.WriteLine(e.Message);
             discord.SetGame(set.setGame);
-        }
+            //set.beeChannel = discord.FindServers("Brady Bunch").FirstOrDefault().FindChannels("theshittiestofposts", exactMatch: false).FirstOrDefault();
+                }
 
     }
 }
@@ -1255,8 +1441,8 @@ namespace LennyBot
 
 //  REMEMBER: 
 //          sync to github
-//          test the sleeping thing ( ͡° ʖ̯ ͡°)
 //          give people more reasons to use him
 //          Finish .duel system (X) Incomplete, add more random events and choices
 //          Add more to 'Profiles' (role, etc)
 //              Keep bein' cool ( ͡° ͜ʖ ͡°)
+//          fix .bm, set set.beeChannel properly (temp fixed)
