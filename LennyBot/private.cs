@@ -8,7 +8,7 @@ namespace LennyBot
 {
     class @private
     {
-        public static string token = "MjMwNTA4MTgwNzkzMzI3NjE2.CuF4tg.UqSDHzELu2xyFgGKS8gOfrxDadY";
+        public static string token = "MjMwNTA4MTgwNzkzMzI3NjE2.Cvg_1g._EbW-E85xgPECDdEvOOe-Gm-Ecw";
     }
 }
 

@@ -8,7 +8,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
-using Google;
+using DuckDuckGo.Net;
+using HtmlAgilityPack;
+using FChan.Library;
 
 namespace LennyBot
 {
@@ -69,13 +71,10 @@ namespace LennyBot
         #endregion
         bool[] creatingRole = new bool[100];
         static Properties.Settings set = new Properties.Settings();
-        Google.API.Search.GimageSearchClient imageClient = new Google.API.Search.GimageSearchClient("http://www.google.com");
-
-
+        HtmlWeb web = new HtmlWeb();
 
         public MyBot()
         {
-
             discord = new DiscordClient(x =>
             {
                 x.LogLevel = LogSeverity.Info;
@@ -115,7 +114,10 @@ namespace LennyBot
             memeCommand();
             giveCoinsCommand();
             eggBongoCommand();
+            whatIsCommand();
+            testCommand();
             imageCommand();
+            fourChanCommand();
             #endregion
 
             discord.ExecuteAndWait(async () =>
@@ -128,7 +130,7 @@ namespace LennyBot
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Unable to connect to Discord! Check your connection!");
-
+                    
                 }
             });
 
@@ -1210,19 +1212,115 @@ namespace LennyBot
                });
         }
 
-        private void imageCommand()
+        private void whatIsCommand()
         {
-            commands.CreateCommand("image")
-                .Description("Searches for an image then sends it into the chat!")
-                .Parameter("search", ParameterType.Required)
+            commands.CreateCommand("whatIs")
+                .Description("Searches for information on the chosen thing and sends it into the chat!")
+                .Parameter("search", ParameterType.Unparsed)
+                .Alias(new string[] { "wi" })
                 .Do(async (e) =>
                {
                    string search = e.GetArg("search");
-                   await e.Channel.SendMessage($"Searching for {search}...");
+                   await e.Channel.SendMessage($"What is: {search}?");
 
-
+                   if (search == "( ͡° ͜ʖ ͡°)")
+                   {
+                       await e.Channel.SendMessage("( ͡° ͜ʖ ͡°), most commonly known as the 'Lenny Face', is the god of this world. Without him, there would be nothing.");
+                   }
+                   else
+                   {
+                       var result = new Search().Query(search, "Lenny Bot");
+                       if (result.Abstract == "")
+                       {
+                           if (result.RelatedTopics.Count > 0) await e.Channel.SendMessage(result.RelatedTopics[0].Text);
+                           else await e.Channel.SendMessage("No results found!");
+                       }
+                       else await e.Channel.SendMessage(result.Abstract);
+                   }
                });
         }
+
+        private void testCommand()
+        {
+            commands.CreateCommand("test")
+                .Description("Used when testing out Discord.NET code! Ignore!")
+                .Do(async (e) =>
+               {
+                   await e.Channel.SendMessage($"Nothing to test.");
+               });
+        }
+
+        private void imageCommand()
+        {
+            commands.CreateCommand("image")
+                .Description("Searches for a specified image then sends it!")
+                .Alias(new string[] { "i" })
+                .Parameter("search", ParameterType.Unparsed)
+                .Do(async (e) =>
+               {
+                   string search = e.GetArg("search");
+                   string link = "https://www.google.nl/search?tbm=isch&q=" + search;
+                   await e.Channel.SendMessage($"Sending {search}!");
+                   var page = web.Load(link);
+                   var node = page.DocumentNode.SelectSingleNode("(//table[@class=\"images_table\"]//img)[1]/parent::a/@href");
+
+                   if (node != null)
+                   {
+                       string imageLink = node.InnerHtml;
+                       string imageLink2 = imageLink.Remove(0, imageLink.IndexOf("https"));
+                       string imageLink3 = imageLink2.Substring(0, imageLink2.IndexOf('"'));
+                       webClient.DownloadFile(imageLink3, @"C:\Users\Owner\Documents\Visual Studio 2015\Projects\LennyBot\LennyBot\tempImage\tempImage.jpg");
+                       await e.Channel.SendFile(@"C:\Users\Owner\Documents\Visual Studio 2015\Projects\LennyBot\LennyBot\tempImage\tempImage.jpg");
+                   }
+                   else
+                   {
+                       await e.Channel.SendMessage("No results!");
+                   }
+               });
+        }
+
+        private void fourChanCommand()
+        {
+            commands.CreateCommand("fourChan")
+                .Alias(new string[] { "fc" })
+                .Description("Gets stuff from 4Chan I guess?")
+                .Parameter("arg", ParameterType.Optional)
+                .Do(async (e) =>
+               {
+                   if (e.GetArg("arg") == "")
+                   {
+                       await e.Channel.SendMessage($"View threads and images from 4chan boards!{Environment.NewLine} .fourChan (boardlist / [board 'letter'])");
+                   }
+                   else if (e.GetArg("arg") == "boardlist")
+                   {
+                       string message = "```" + Environment.NewLine + "Boards:";
+                       for (int i = 0; i <= 30; i++)
+                       {
+                           message += Environment.NewLine + Chan.GetBoard().Boards[i];
+                       }
+                       await e.Channel.SendMessage(message += "```");
+
+                       message = "```";
+                       for (int i = 31; i <= 60; i++)
+                       {
+                           message += Environment.NewLine + Chan.GetBoard().Boards[i];
+                       }
+                       await e.Channel.SendMessage(message + "```");
+
+                       message = "```";
+                       for (int i = 61; i <= 70; i++)
+                       {
+                           message += Environment.NewLine + Chan.GetBoard().Boards[i];
+                       }
+                       await e.Channel.SendMessage(message + "```");
+                   }
+                   else
+                   {
+
+                   }
+               });
+        }
+
         //      Command ID's:      |      Other Item ID's
         //                         |
         //      hello 1            |       upgrade role 01
@@ -1404,6 +1502,7 @@ namespace LennyBot
                 pollChannel.SendMessage(displayPoll() + "```");
             }
             #endregion
+            
 
             set.Save();
             GC.Collect();
@@ -1432,14 +1531,16 @@ namespace LennyBot
         {
             Console.WriteLine(e.Message);
             discord.SetGame(set.setGame);
+            
             //set.beeChannel = discord.FindServers("Brady Bunch").FirstOrDefault().FindChannels("theshittiestofposts", exactMatch: false).FirstOrDefault();
-                }
+        }
 
     }
 }
 
 
 //  REMEMBER: 
+//          Test 4chan stuff
 //          sync to github
 //          give people more reasons to use him
 //          Finish .duel system (X) Incomplete, add more random events and choices
