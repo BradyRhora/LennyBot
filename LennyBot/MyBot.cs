@@ -1287,6 +1287,8 @@ namespace LennyBot
                 .Parameter("arg", ParameterType.Optional)
                 .Do(async (e) =>
                {
+                   FChan.Library.Thread setThread = null;
+
                    if (e.GetArg("arg") == "")
                    {
                        await e.Channel.SendMessage($"View threads and images from 4chan boards!{Environment.NewLine} .fourChan (boardlist / [board 'letter'])");
@@ -1314,9 +1316,27 @@ namespace LennyBot
                        }
                        await e.Channel.SendMessage(message + "```");
                    }
+                   else if (e.GetArg("arg") == "setThread")
+                   {
+                       setThread = Chan.GetThread("b", 100);
+                   }
                    else
                    {
-
+                       Post setPost = setThread.Posts[1];
+                       Console.WriteLine(setPost.Board);
+                       Console.WriteLine(setPost.Comment);
+                       Console.WriteLine(setPost.FileName);
+                       Console.WriteLine(setPost.HasImage);
+                       Console.WriteLine(setPost.Images);
+                       Console.WriteLine(setPost.IsArchived);
+                       Console.WriteLine(setPost.IsStickied);
+                       Console.WriteLine(setPost.Name);
+                       Console.WriteLine(setPost.OriginalFileName);
+                       Console.WriteLine(setPost.Replies);
+                       Console.WriteLine(setPost.Subject);
+                       Console.WriteLine(setPost.Tag);
+                       Console.WriteLine(setPost.ThreadUrlSlug);
+                       Console.WriteLine(setPost.TripCode);
                    }
                });
         }
@@ -1540,8 +1560,8 @@ namespace LennyBot
 
 
 //  REMEMBER: 
-//          Test 4chan stuff
-//          sync to github
+//          solve fchan stuff or delete it
+//          sync to github x
 //          give people more reasons to use him
 //          Finish .duel system (X) Incomplete, add more random events and choices
 //          Add more to 'Profiles' (role, etc)
