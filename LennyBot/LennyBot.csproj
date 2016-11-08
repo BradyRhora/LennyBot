@@ -45,16 +45,12 @@
       <HintPath>..\packages\DuckDuckGo.Net.1.0.1\lib\DuckDuckGo.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="FChan.Library, Version=1.0.8.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\FChan.Library.1.0.8\lib\portable-net45+wp80+win+MonoAndroid10+xamarinios10+MonoTouch10\FChan.Library.dll</HintPath>
+    <Reference Include="GoogleSearchApi, Version=1.1.0.0, Culture=neutral, PublicKeyToken=23abb0c50780db17, processorArchitecture=MSIL">
+      <HintPath>..\packages\GoogleSearchApi.1.0.1\lib\net40\GoogleSearchApi.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="HtmlAgilityPack, Version=1.4.9.5, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
       <HintPath>..\packages\HtmlAgilityPack.1.4.9.5\lib\Net45\HtmlAgilityPack.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\FChan.Library.1.0.8\lib\portable-net45+wp80+win+MonoAndroid10+xamarinios10+MonoTouch10\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Nito.AsyncEx, Version=3.0.1.0, Culture=neutral, processorArchitecture=MSIL">

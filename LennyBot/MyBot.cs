@@ -10,7 +10,6 @@ using System.Text;
 using System.Threading;
 using DuckDuckGo.Net;
 using HtmlAgilityPack;
-using FChan.Library;
 
 namespace LennyBot
 {
@@ -117,7 +116,6 @@ namespace LennyBot
             whatIsCommand();
             testCommand();
             imageCommand();
-            fourChanCommand();
             #endregion
 
             discord.ExecuteAndWait(async () =>
@@ -1262,15 +1260,16 @@ namespace LennyBot
                    string link = "https://www.google.nl/search?tbm=isch&q=" + search;
                    await e.Channel.SendMessage($"Sending {search}!");
                    var page = web.Load(link);
-                   var node = page.DocumentNode.SelectSingleNode("(//table[@class=\"images_table\"]//img)[1]/parent::a/@href");
+                   var nodes = page.DocumentNode.SelectNodes("//*[@id=\"ires\"]"); //(//table[@class=\"images_table\"]//img)[1]/parent::a/@href sends preview
+                   var node = nodes.Count;
 
-                   if (node != null)
+                   if (nodes != null)
                    {
-                       string imageLink = node.InnerHtml;
-                       string imageLink2 = imageLink.Remove(0, imageLink.IndexOf("https"));
-                       string imageLink3 = imageLink2.Substring(0, imageLink2.IndexOf('"'));
-                       webClient.DownloadFile(imageLink3, @"C:\Users\Owner\Documents\Visual Studio 2015\Projects\LennyBot\LennyBot\tempImage\tempImage.jpg");
-                       await e.Channel.SendFile(@"C:\Users\Owner\Documents\Visual Studio 2015\Projects\LennyBot\LennyBot\tempImage\tempImage.jpg");
+                       //string imageLink = node.InnerHtml;
+                       //string imageLink2 = imageLink.Remove(0, imageLink.IndexOf("https"));
+                       //string imageLink3 = imageLink2.Substring(0, imageLink2.IndexOf('"'));
+                       //webClient.DownloadFile(imageLink3, @"C:\Users\Owner\Documents\Visual Studio 2015\Projects\LennyBot\LennyBot\tempImage\tempImage.jpg");
+                       //await e.Channel.SendFile(@"C:\Users\Owner\Documents\Visual Studio 2015\Projects\LennyBot\LennyBot\tempImage\tempImage.jpg");
                    }
                    else
                    {
@@ -1278,68 +1277,7 @@ namespace LennyBot
                    }
                });
         }
-
-        private void fourChanCommand()
-        {
-            commands.CreateCommand("fourChan")
-                .Alias(new string[] { "fc" })
-                .Description("Gets stuff from 4Chan I guess?")
-                .Parameter("arg", ParameterType.Optional)
-                .Do(async (e) =>
-               {
-                   FChan.Library.Thread setThread = null;
-
-                   if (e.GetArg("arg") == "")
-                   {
-                       await e.Channel.SendMessage($"View threads and images from 4chan boards!{Environment.NewLine} .fourChan (boardlist / [board 'letter'])");
-                   }
-                   else if (e.GetArg("arg") == "boardlist")
-                   {
-                       string message = "```" + Environment.NewLine + "Boards:";
-                       for (int i = 0; i <= 30; i++)
-                       {
-                           message += Environment.NewLine + Chan.GetBoard().Boards[i];
-                       }
-                       await e.Channel.SendMessage(message += "```");
-
-                       message = "```";
-                       for (int i = 31; i <= 60; i++)
-                       {
-                           message += Environment.NewLine + Chan.GetBoard().Boards[i];
-                       }
-                       await e.Channel.SendMessage(message + "```");
-
-                       message = "```";
-                       for (int i = 61; i <= 70; i++)
-                       {
-                           message += Environment.NewLine + Chan.GetBoard().Boards[i];
-                       }
-                       await e.Channel.SendMessage(message + "```");
-                   }
-                   else if (e.GetArg("arg") == "setThread")
-                   {
-                       setThread = Chan.GetThread("b", 100);
-                   }
-                   else
-                   {
-                       Post setPost = setThread.Posts[1];
-                       Console.WriteLine(setPost.Board);
-                       Console.WriteLine(setPost.Comment);
-                       Console.WriteLine(setPost.FileName);
-                       Console.WriteLine(setPost.HasImage);
-                       Console.WriteLine(setPost.Images);
-                       Console.WriteLine(setPost.IsArchived);
-                       Console.WriteLine(setPost.IsStickied);
-                       Console.WriteLine(setPost.Name);
-                       Console.WriteLine(setPost.OriginalFileName);
-                       Console.WriteLine(setPost.Replies);
-                       Console.WriteLine(setPost.Subject);
-                       Console.WriteLine(setPost.Tag);
-                       Console.WriteLine(setPost.ThreadUrlSlug);
-                       Console.WriteLine(setPost.TripCode);
-                   }
-               });
-        }
+        
 
         //      Command ID's:      |      Other Item ID's
         //                         |
