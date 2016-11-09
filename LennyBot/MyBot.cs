@@ -17,7 +17,7 @@ namespace LennyBot
     {
         Timer t = new Timer(TimerCallback, null, 0, 2000);
         WebClient webClient = new WebClient();
-        static DiscordClient discord;
+        public static DiscordClient discord;
         static CommandService commands;
         static Random rdm = new Random();
         #region Duel Vars
@@ -1276,7 +1276,7 @@ namespace LennyBot
                        await e.Channel.SendMessage("No results!");
                    }
                });
-        }
+        } //fix or revert to original
         
 
         //      Command ID's:      |      Other Item ID's
