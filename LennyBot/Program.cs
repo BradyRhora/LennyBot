@@ -9,7 +9,8 @@ namespace LennyBot
 {
     class Program
     {
-        
+        public static mainForm controller = new mainForm();
+
         static void Main(string[] args)
         {
             try
@@ -18,10 +19,10 @@ namespace LennyBot
                 threadForm.Start();
                 MyBot MyBot = new MyBot();
             }
-            catch (Exception a)
+            catch (Exception e)
             {
                 Console.WriteLine("Error starting bot!");
-                Console.Write(a);
+                Console.Write(e);
                 Console.ReadLine();
             }
             
@@ -32,18 +33,8 @@ namespace LennyBot
         [STAThread]
         static void FormThread()
         {
-            try
-            {
-                mainForm mainForm = new mainForm();
                 Application.EnableVisualStyles();
-                Application.Run(mainForm);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Error opening controller!");
-                Console.Write(e);
-                Console.ReadLine();
-            }
+                Application.Run(controller);
         }
     }
 }

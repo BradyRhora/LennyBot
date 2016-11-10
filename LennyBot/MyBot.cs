@@ -2,6 +2,7 @@
 using Discord.Commands;
 
 using System;
+using System.Windows.Forms;
 using System.Net;
 using System.IO;
 using System.Collections.Generic;
@@ -15,7 +16,7 @@ namespace LennyBot
 {
     class MyBot
     {
-        Timer t = new Timer(TimerCallback, null, 0, 2000);
+        System.Threading.Timer t = new System.Threading.Timer(TimerCallback, null, 0, 2000);
         WebClient webClient = new WebClient();
         public static DiscordClient discord;
         static CommandService commands;
@@ -27,8 +28,6 @@ namespace LennyBot
         int userHealth = 100;
         string fighter;
         #endregion
-        bool ecc = false;
-        string eccMessage;
         #region Lottery Vars
         static DateTime lotteryEnd;
         static bool lotteryOn = false;
@@ -101,7 +100,6 @@ namespace LennyBot
             registerCommand();
             profileCommand();
             consoleCommand();
-            eccCommand();
             lotteryCommand();
             buyCommand();
             coinCommand();
@@ -657,31 +655,6 @@ namespace LennyBot
                });
         }
 
-        private void eccCommand()
-        {
-            commands.CreateCommand("enableconsolechat")
-                .Description("Enabled the ability to chat as Lenny from console.")
-                .Alias(new string[] { "ecc" })
-                .Do(async (e) =>
-               {
-                   await e.Channel.SendMessage("You may begin typing in console! ( ͡° ͜ʖ ͡°) Type '/stop' in console to stop.");
-                   ecc = true;
-
-                   while (ecc)
-                   {
-                       eccMessage = Console.ReadLine();
-                       if (eccMessage == "/stop")
-                       {
-                           await e.Channel.SendMessage("Stopping .ecc, you may now use commands again.");
-                           ecc = false;
-                       }
-                       else await e.Channel.SendMessage(eccMessage);
-                   }
-
-
-               });
-        }
-
         private void lotteryCommand()
         {
             commands.CreateCommand("lottery")
@@ -1137,7 +1110,7 @@ namespace LennyBot
                         if (e.Message.Attachments == null) await e.Channel.SendMessage("You must include an image meme with your message!");
                         else
                         {
-                            Message.Attachment meme;
+                            Discord.Message.Attachment meme;
                             meme = e.Message.Attachments[0];
 
                             for (int i = 0; i <= 1000; i++)
@@ -1493,6 +1466,7 @@ namespace LennyBot
             //set.beeChannel = discord.FindServers("Brady Bunch").FirstOrDefault().FindChannels("theshittiestofposts", exactMatch: false).FirstOrDefault();
         }
 
+        
     }
 }
 
