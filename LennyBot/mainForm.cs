@@ -73,8 +73,8 @@ namespace LennyBot
         private void cbxServers_SelectedValueChanged(object sender, EventArgs e)
         {
             cbxChannels.Items.Clear();
-            channels = selectedServer.TextChannels.ToList();
             selectedServer = servers[cbxServers.SelectedIndex];
+            channels = selectedServer.TextChannels.ToList();
             updateUsers();
 
             for (int i = 0; i < channels.Count; i++)
@@ -140,5 +140,23 @@ namespace LennyBot
                 txtUserRole.Text += Environment.NewLine + selectedUserRoles[i];
             }
         }
+
+        private void btnConnect_Click(object sender, EventArgs e)
+        {
+            if (MyBot.discord.State == Discord.ConnectionState.Connected)
+            {
+                btnConnect.Text = "Connect";
+                MyBot.discord.Disconnect();
+            }
+            else
+            {
+                btnConnect.Text = "disonnect";
+                MyBot MyBot = new MyBot();
+            }
+        }
     }
 }
+
+//NOTES:
+//      - Make it so that messages that are sent in the selected channel get recieved into txtConsole! If you can.
+//      - Messages are being sent to the wrong server but right channel? Fix!

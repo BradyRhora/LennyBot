@@ -46,6 +46,7 @@
             this.txtCoins = new System.Windows.Forms.TextBox();
             this.txtUserRole = new System.Windows.Forms.TextBox();
             this.lblRole = new System.Windows.Forms.Label();
+            this.btnConnect = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // txtConsole
@@ -217,12 +218,23 @@
             this.lblRole.TabIndex = 16;
             this.lblRole.Text = "Roles:";
             // 
+            // btnConnect
+            // 
+            this.btnConnect.Location = new System.Drawing.Point(94, 525);
+            this.btnConnect.Name = "btnConnect";
+            this.btnConnect.Size = new System.Drawing.Size(75, 27);
+            this.btnConnect.TabIndex = 18;
+            this.btnConnect.Text = "Disconnect";
+            this.btnConnect.UseVisualStyleBackColor = true;
+            this.btnConnect.Click += new System.EventHandler(this.btnConnect_Click);
+            // 
             // mainForm
             // 
             this.AcceptButton = this.btnSubmit;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(930, 564);
+            this.Controls.Add(this.btnConnect);
             this.Controls.Add(this.txtUserRole);
             this.Controls.Add(this.lblRole);
             this.Controls.Add(this.txtCoins);
@@ -269,5 +281,6 @@
         private System.Windows.Forms.TextBox txtCoins;
         private System.Windows.Forms.TextBox txtUserRole;
         private System.Windows.Forms.Label lblRole;
+        private System.Windows.Forms.Button btnConnect;
     }
 }

@@ -25,9 +25,6 @@ namespace LennyBot
                 Console.Write(e);
                 Console.ReadLine();
             }
-            
-
-
         }
 
         [STAThread]
