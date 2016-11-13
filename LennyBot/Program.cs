@@ -9,8 +9,6 @@ namespace LennyBot
 {
     class Program
     {
-        public static mainForm controller = new mainForm();
-
         static void Main(string[] args)
         {
             try
@@ -30,8 +28,9 @@ namespace LennyBot
         [STAThread]
         static void FormThread()
         {
+            mainForm mainForm = new mainForm();
                 Application.EnableVisualStyles();
-                Application.Run(controller);
+                Application.Run(mainForm);
         }
     }
 }

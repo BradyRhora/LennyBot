@@ -314,5 +314,17 @@ namespace LennyBot.Properties {
                 this["memeSubmitter"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string consoleText {
+            get {
+                return ((string)(this["consoleText"]));
+            }
+            set {
+                this["consoleText"] = value;
+            }
+        }
     }
 }

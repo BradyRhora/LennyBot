@@ -28,10 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.txtConsole = new System.Windows.Forms.TextBox();
             this.txtSubmit = new System.Windows.Forms.TextBox();
             this.btnSubmit = new System.Windows.Forms.Button();
-            this.btnLoad = new System.Windows.Forms.Button();
+            this.btnUpdate = new System.Windows.Forms.Button();
             this.cbxServers = new System.Windows.Forms.ComboBox();
             this.cbxChannels = new System.Windows.Forms.ComboBox();
             this.lblServer = new System.Windows.Forms.Label();
@@ -47,6 +48,8 @@
             this.txtUserRole = new System.Windows.Forms.TextBox();
             this.lblRole = new System.Windows.Forms.Label();
             this.btnConnect = new System.Windows.Forms.Button();
+            this.timGetConsole = new System.Windows.Forms.Timer(this.components);
+            this.timLoad = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
             // txtConsole
@@ -80,20 +83,20 @@
             this.btnSubmit.UseVisualStyleBackColor = true;
             this.btnSubmit.Click += new System.EventHandler(this.btnSubmit_Click);
             // 
-            // btnLoad
+            // btnUpdate
             // 
-            this.btnLoad.Location = new System.Drawing.Point(13, 525);
-            this.btnLoad.Name = "btnLoad";
-            this.btnLoad.Size = new System.Drawing.Size(75, 27);
-            this.btnLoad.TabIndex = 3;
-            this.btnLoad.Text = "Load";
-            this.btnLoad.UseVisualStyleBackColor = true;
-            this.btnLoad.Click += new System.EventHandler(this.btnLoad_Click);
+            this.btnUpdate.Location = new System.Drawing.Point(13, 525);
+            this.btnUpdate.Name = "btnUpdate";
+            this.btnUpdate.Size = new System.Drawing.Size(75, 27);
+            this.btnUpdate.TabIndex = 3;
+            this.btnUpdate.Text = "Update";
+            this.btnUpdate.UseVisualStyleBackColor = true;
+            this.btnUpdate.Click += new System.EventHandler(this.btnLoad_Click);
             // 
             // cbxServers
             // 
             this.cbxServers.FormattingEnabled = true;
-            this.cbxServers.Location = new System.Drawing.Point(445, 432);
+            this.cbxServers.Location = new System.Drawing.Point(198, 432);
             this.cbxServers.Name = "cbxServers";
             this.cbxServers.Size = new System.Drawing.Size(121, 21);
             this.cbxServers.TabIndex = 4;
@@ -102,7 +105,7 @@
             // cbxChannels
             // 
             this.cbxChannels.FormattingEnabled = true;
-            this.cbxChannels.Location = new System.Drawing.Point(445, 459);
+            this.cbxChannels.Location = new System.Drawing.Point(198, 459);
             this.cbxChannels.Name = "cbxChannels";
             this.cbxChannels.Size = new System.Drawing.Size(121, 21);
             this.cbxChannels.TabIndex = 5;
@@ -111,7 +114,7 @@
             // lblServer
             // 
             this.lblServer.AutoSize = true;
-            this.lblServer.Location = new System.Drawing.Point(398, 435);
+            this.lblServer.Location = new System.Drawing.Point(151, 435);
             this.lblServer.Name = "lblServer";
             this.lblServer.Size = new System.Drawing.Size(41, 13);
             this.lblServer.TabIndex = 6;
@@ -120,7 +123,7 @@
             // lblChannel
             // 
             this.lblChannel.AutoSize = true;
-            this.lblChannel.Location = new System.Drawing.Point(391, 462);
+            this.lblChannel.Location = new System.Drawing.Point(144, 462);
             this.lblChannel.Name = "lblChannel";
             this.lblChannel.Size = new System.Drawing.Size(49, 13);
             this.lblChannel.TabIndex = 7;
@@ -168,7 +171,7 @@
             // lblUsers
             // 
             this.lblUsers.AutoSize = true;
-            this.lblUsers.Location = new System.Drawing.Point(580, 435);
+            this.lblUsers.Location = new System.Drawing.Point(333, 435);
             this.lblUsers.Name = "lblUsers";
             this.lblUsers.Size = new System.Drawing.Size(37, 13);
             this.lblUsers.TabIndex = 12;
@@ -177,15 +180,16 @@
             // cbxUsers
             // 
             this.cbxUsers.FormattingEnabled = true;
-            this.cbxUsers.Location = new System.Drawing.Point(623, 432);
+            this.cbxUsers.Location = new System.Drawing.Point(376, 432);
             this.cbxUsers.Name = "cbxUsers";
-            this.cbxUsers.Size = new System.Drawing.Size(121, 21);
+            this.cbxUsers.Size = new System.Drawing.Size(190, 21);
             this.cbxUsers.TabIndex = 13;
+            this.cbxUsers.SelectedIndexChanged += new System.EventHandler(this.cbxUsers_SelectedIndexChanged);
             // 
             // lblCoins
             // 
             this.lblCoins.AutoSize = true;
-            this.lblCoins.Location = new System.Drawing.Point(587, 462);
+            this.lblCoins.Location = new System.Drawing.Point(334, 462);
             this.lblCoins.Name = "lblCoins";
             this.lblCoins.Size = new System.Drawing.Size(36, 13);
             this.lblCoins.TabIndex = 14;
@@ -193,26 +197,26 @@
             // 
             // txtCoins
             // 
-            this.txtCoins.Location = new System.Drawing.Point(623, 459);
+            this.txtCoins.Location = new System.Drawing.Point(376, 459);
             this.txtCoins.Name = "txtCoins";
             this.txtCoins.ReadOnly = true;
-            this.txtCoins.Size = new System.Drawing.Size(75, 20);
+            this.txtCoins.Size = new System.Drawing.Size(190, 20);
             this.txtCoins.TabIndex = 15;
             // 
             // txtUserRole
             // 
-            this.txtUserRole.Location = new System.Drawing.Point(623, 485);
+            this.txtUserRole.Location = new System.Drawing.Point(376, 485);
             this.txtUserRole.Multiline = true;
             this.txtUserRole.Name = "txtUserRole";
             this.txtUserRole.ReadOnly = true;
             this.txtUserRole.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtUserRole.Size = new System.Drawing.Size(89, 20);
+            this.txtUserRole.Size = new System.Drawing.Size(190, 67);
             this.txtUserRole.TabIndex = 17;
             // 
             // lblRole
             // 
             this.lblRole.AutoSize = true;
-            this.lblRole.Location = new System.Drawing.Point(580, 488);
+            this.lblRole.Location = new System.Drawing.Point(333, 488);
             this.lblRole.Name = "lblRole";
             this.lblRole.Size = new System.Drawing.Size(37, 13);
             this.lblRole.TabIndex = 16;
@@ -227,6 +231,18 @@
             this.btnConnect.Text = "Disconnect";
             this.btnConnect.UseVisualStyleBackColor = true;
             this.btnConnect.Click += new System.EventHandler(this.btnConnect_Click);
+            // 
+            // timGetConsole
+            // 
+            this.timGetConsole.Enabled = true;
+            this.timGetConsole.Interval = 1;
+            this.timGetConsole.Tick += new System.EventHandler(this.timGetConsole_Tick);
+            // 
+            // timLoad
+            // 
+            this.timLoad.Enabled = true;
+            this.timLoad.Interval = 2000;
+            this.timLoad.Tick += new System.EventHandler(this.timLoad_Tick);
             // 
             // mainForm
             // 
@@ -249,7 +265,7 @@
             this.Controls.Add(this.lblServer);
             this.Controls.Add(this.cbxChannels);
             this.Controls.Add(this.cbxServers);
-            this.Controls.Add(this.btnLoad);
+            this.Controls.Add(this.btnUpdate);
             this.Controls.Add(this.btnSubmit);
             this.Controls.Add(this.txtSubmit);
             this.Controls.Add(this.txtConsole);
@@ -265,7 +281,7 @@
         #endregion
         private System.Windows.Forms.TextBox txtSubmit;
         private System.Windows.Forms.Button btnSubmit;
-        private System.Windows.Forms.Button btnLoad;
+        private System.Windows.Forms.Button btnUpdate;
         private System.Windows.Forms.ComboBox cbxServers;
         private System.Windows.Forms.ComboBox cbxChannels;
         public System.Windows.Forms.TextBox txtConsole;
@@ -282,5 +298,7 @@
         private System.Windows.Forms.TextBox txtUserRole;
         private System.Windows.Forms.Label lblRole;
         private System.Windows.Forms.Button btnConnect;
+        private System.Windows.Forms.Timer timGetConsole;
+        private System.Windows.Forms.Timer timLoad;
     }
 }

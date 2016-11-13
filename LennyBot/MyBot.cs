@@ -70,6 +70,7 @@ namespace LennyBot
         bool[] creatingRole = new bool[100];
         static Properties.Settings set = new Properties.Settings();
         HtmlWeb web = new HtmlWeb();
+        public static string consoleSend = null;
 
         public MyBot()
         {
@@ -130,7 +131,10 @@ namespace LennyBot
                 }
             });
 
-            
+            MyBot.discord.MessageReceived += (s, e) =>
+            {
+                Console.WriteLine("Message recieved!");
+            };
         }
 
 
@@ -526,7 +530,8 @@ namespace LennyBot
                            set.coins[i] = 10;
                            set.owned[i] = set.users[i];
                            set.Save();
-                           Console.WriteLine($"{e.User.Name} has registered!");
+                           consoleSend = $"{e.User.Name} has registered!";
+                           Console.WriteLine(consoleSend);
                            await e.Channel.SendMessage("Here's 10 Lenny Coins to start you off!");
                            break;
                        }
@@ -626,32 +631,32 @@ namespace LennyBot
                    await e.Channel.SendMessage("Check console for server info!");
 
 
-                   Console.WriteLine("#####PROFILES#####");
+                   consoleSend = Environment.NewLine + "#####PROFILES#####";
                    for (int i = 0; i <= 200; i++)
                    {
                        if (set.users[i] == "0") break;
-                       Console.WriteLine("USER: " + set.users[i] + $"[{i}]");
-                       Console.WriteLine("COINS: " + set.coins[i]);
-                       Console.WriteLine("OWNED COMMANDS: " + set.owned[i]);
-                       Console.WriteLine("------------------");
+                       consoleSend += Environment.NewLine + "USER: " + set.users[i] + $"[{i}]";
+                       consoleSend += Environment.NewLine + "COINS: " + set.coins[i];
+                       consoleSend += Environment.NewLine + "OWNED COMMANDS: " + set.owned[i];
+                       consoleSend += Environment.NewLine + "------------------";
                    }
-                   Console.WriteLine("##################");
-                   Console.WriteLine($"Set game: {e.Server.FindUsers("( ͡° ͜ʖ ͡°)").FirstOrDefault().CurrentGame}");
-                   Console.WriteLine("###OTHER THINGS###");
-                   Console.WriteLine($"State: {discord.State} || Status: {discord.Status}");
-                   Console.WriteLine("#####LEADERS#####");
-                   string mostCoins = set.users[0];
-                   int mostCoinsInt = set.coins[0];
-                   for (int i = 0; i < 100; i++)
-                   {
-                       if (set.coins[i] > mostCoinsInt)
-                       {
-                           mostCoins = set.users[i];
-                           mostCoinsInt = set.coins[i];
-                       }
-                   }
-                   Console.WriteLine($"Most Lenny Coins: {mostCoins} with {mostCoinsInt} Lenny Coins!");
-
+                   consoleSend += Environment.NewLine + "##################";
+                   consoleSend += Environment.NewLine + $"Set game: {e.Server.FindUsers("( ͡° ͜ʖ ͡°)").FirstOrDefault().CurrentGame}";
+                   consoleSend += Environment.NewLine + "###OTHER THINGS###";
+                   consoleSend += Environment.NewLine + $"State: {discord.State} || Status: {discord.Status}";
+                   Console.WriteLine(consoleSend);
+                   //consoleSend += Environment.NewLine + "#####LEADERS#####";
+                   //string mostCoins = set.users[0];
+                   //int mostCoinsInt = set.coins[0];
+                   //for (int i = 0; i < 100; i++)
+                   //{
+                   //    if (set.coins[i] > mostCoinsInt)
+                   //    {
+                   //        mostCoins = set.users[i];
+                   //        mostCoinsInt = set.coins[i];
+                   //    }
+                   //}
+                   //consoleSend += Environment.NewLine + $"Most Lenny Coins: {mostCoins} with {mostCoinsInt} Lenny Coins!";
                });
         }
 
@@ -1233,23 +1238,22 @@ namespace LennyBot
                    string link = "https://www.google.nl/search?tbm=isch&q=" + search;
                    await e.Channel.SendMessage($"Sending {search}!");
                    var page = web.Load(link);
-                   var nodes = page.DocumentNode.SelectNodes("//*[@id=\"ires\"]"); //(//table[@class=\"images_table\"]//img)[1]/parent::a/@href sends preview
-                   var node = nodes.Count;
-
-                   if (nodes != null)
+                   var node = page.DocumentNode.SelectSingleNode("(//table[@class=\"images_table\"]//img)[1]/parent::a/@href"); //(//table[@class=\"images_table\"]//img)[1]/parent::a/@href sends preview
+                   
+                   if (node != null)
                    {
-                       //string imageLink = node.InnerHtml;
-                       //string imageLink2 = imageLink.Remove(0, imageLink.IndexOf("https"));
-                       //string imageLink3 = imageLink2.Substring(0, imageLink2.IndexOf('"'));
-                       //webClient.DownloadFile(imageLink3, @"C:\Users\Owner\Documents\Visual Studio 2015\Projects\LennyBot\LennyBot\tempImage\tempImage.jpg");
-                       //await e.Channel.SendFile(@"C:\Users\Owner\Documents\Visual Studio 2015\Projects\LennyBot\LennyBot\tempImage\tempImage.jpg");
+                       string imageLink = node.InnerHtml;
+                       string imageLink2 = imageLink.Remove(0, imageLink.IndexOf("https"));
+                       string imageLink3 = imageLink2.Substring(0, imageLink2.IndexOf('"'));
+                       webClient.DownloadFile(imageLink3, @"C:\Users\Owner\Documents\Visual Studio 2015\Projects\LennyBot\LennyBot\tempImage\tempImage.jpg");
+                       await e.Channel.SendFile(@"C:\Users\Owner\Documents\Visual Studio 2015\Projects\LennyBot\LennyBot\tempImage\tempImage.jpg");
                    }
                    else
                    {
                        await e.Channel.SendMessage("No results!");
                    }
                });
-        } //fix or revert to original
+        } //make it send big pics you slut
         
 
         //      Command ID's:      |      Other Item ID's
@@ -1439,11 +1443,6 @@ namespace LennyBot
             GC.Collect();
         }
 
-        static void OnProcessExit(object sender, EventArgs e)
-        {
-//            Console.WriteLine("Dicks");
-        }
-
         private int GetUserID(User user)
         {
             for (int i = 0; i<100;i++)
@@ -1462,7 +1461,7 @@ namespace LennyBot
         {
             Console.WriteLine(e.Message);
             discord.SetGame(set.setGame);
-            
+            consoleSend = e.Message;
             //set.beeChannel = discord.FindServers("Brady Bunch").FirstOrDefault().FindChannels("theshittiestofposts", exactMatch: false).FirstOrDefault();
         }
 
@@ -1472,10 +1471,11 @@ namespace LennyBot
 
 
 //  REMEMBER: 
-//          solve fchan stuff or delete it
-//          sync to github x
+//          Test consoleSend
+//          sync to github xxxx
 //          give people more reasons to use him
 //          Finish .duel system (X) Incomplete, add more random events and choices
 //          Add more to 'Profiles' (role, etc)
 //              Keep bein' cool ( ͡° ͜ʖ ͡°)
 //          fix .bm, set set.beeChannel properly (temp fixed)
+//          Actually fix stuff?????
