@@ -326,5 +326,41 @@ namespace LennyBot.Properties {
                 this["consoleText"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("<?xml version=\"1.0\" encoding=\"utf-16\"?>\r\n<ArrayOfLong xmlns:xsi=\"http://www.w3.or" +
+            "g/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">\r\n  <lon" +
+            "g>0</long>\r\n  <long>0</long>\r\n  <long>0</long>\r\n  <long>0</long>\r\n  <long>0</lon" +
+            "g>\r\n  <long>0</long>\r\n  <long>0</long>\r\n  <long>0</long>\r\n  <long>0</long>\r\n  <l" +
+            "ong>0</long>\r\n  <long>0</long>\r\n  <long>0</long>\r\n  <long>0</long>\r\n  <long>0</l" +
+            "ong>\r\n  <long>0</long>\r\n  <long>0</long>\r\n  <long>0</long>\r\n  <long>0</long>\r\n  " +
+            "<long>0</long>\r\n  <long>0</long>\r\n  <long>0</long>\r\n  <long>0</long>\r\n  <long>0<" +
+            "/long>\r\n  <long>0</long>\r\n  <long>0</long>\r\n  <long>0</long>\r\n  <long>0</long>\r\n" +
+            "  <long>0</long>\r\n  <long>0</long>\r\n  <long>0</long>\r\n  <long>0</long>\r\n  <long>" +
+            "0</long>\r\n  <long>0</long>\r\n  <long>0</long>\r\n  <long>0</long>\r\n  <long>0</long>" +
+            "\r\n  <long>0</long>\r\n  <long>0</long>\r\n  <long>0</long>\r\n  <long>0</long>\r\n  <lon" +
+            "g>0</long>\r\n  <long>0</long>\r\n  <long>0</long>\r\n  <long>0</long>\r\n  <long>0</lon" +
+            "g>\r\n  <long>0</long>\r\n  <long>0</long>\r\n  <long>0</long>\r\n  <long>0</long>\r\n  <l" +
+            "ong>0</long>\r\n  <long>0</long>\r\n  <long>0</long>\r\n  <long>0</long>\r\n  <long>0</l" +
+            "ong>\r\n  <long>0</long>\r\n  <long>0</long>\r\n  <long>0</long>\r\n  <long>0</long>\r\n  " +
+            "<long>0</long>\r\n  <long>0</long>\r\n  <long>0</long>\r\n  <long>0</long>\r\n  <long>0<" +
+            "/long>\r\n  <long>0</long>\r\n  <long>0</long>\r\n  <long>0</long>\r\n  <long>0</long>\r\n" +
+            "  <long>0</long>\r\n  <long>0</long>\r\n  <long>0</long>\r\n  <long>0</long>\r\n  <long>" +
+            "0</long>\r\n  <long>0</long>\r\n  <long>0</long>\r\n  <long>0</long>\r\n  <long>0</long>" +
+            "\r\n  <long>0</long>\r\n  <long>0</long>\r\n  <long>0</long>\r\n  <long>0</long>\r\n  <lon" +
+            "g>0</long>\r\n  <long>0</long>\r\n  <long>0</long>\r\n  <long>0</long>\r\n  <long>0</lon" +
+            "g>\r\n  <long>0</long>\r\n  <long>0</long>\r\n  <long>0</long>\r\n  <long>0</long>\r\n  <l" +
+            "ong>0</long>\r\n  <long>0</long>\r\n  <long>0</long>\r\n  <long>0</long>\r\n  <long>0</l" +
+            "ong>\r\n  <long>0</long>\r\n  <long>0</long>\r\n  <long>0</long>\r\n  <long>0</long>\r\n  " +
+            "<long>0</long>\r\n  <long>0</long>\r\n  <long>0</long>\r\n</ArrayOfLong>")]
+        public long[] userID {
+            get {
+                return ((long[])(this["userID"]));
+            }
+            set {
+                this["userID"] = value;
+            }
+        }
     }
 }

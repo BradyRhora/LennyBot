@@ -50,6 +50,15 @@
             this.btnConnect = new System.Windows.Forms.Button();
             this.timGetConsole = new System.Windows.Forms.Timer(this.components);
             this.timLoad = new System.Windows.Forms.Timer(this.components);
+            this.lblRestartCount = new System.Windows.Forms.Label();
+            this.lblBeeMovie = new System.Windows.Forms.Label();
+            this.txtBeeMovie = new System.Windows.Forms.TextBox();
+            this.btnBeeMovieSwitch = new System.Windows.Forms.Button();
+            this.txtBMTime = new System.Windows.Forms.TextBox();
+            this.timBM = new System.Windows.Forms.Timer(this.components);
+            this.timDisconnectCheck = new System.Windows.Forms.Timer(this.components);
+            this.timDCWait = new System.Windows.Forms.Timer(this.components);
+            this.btnExit = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // txtConsole
@@ -85,7 +94,7 @@
             // 
             // btnUpdate
             // 
-            this.btnUpdate.Location = new System.Drawing.Point(13, 525);
+            this.btnUpdate.Location = new System.Drawing.Point(10, 512);
             this.btnUpdate.Name = "btnUpdate";
             this.btnUpdate.Size = new System.Drawing.Size(75, 27);
             this.btnUpdate.TabIndex = 3;
@@ -224,7 +233,7 @@
             // 
             // btnConnect
             // 
-            this.btnConnect.Location = new System.Drawing.Point(94, 525);
+            this.btnConnect.Location = new System.Drawing.Point(91, 512);
             this.btnConnect.Name = "btnConnect";
             this.btnConnect.Size = new System.Drawing.Size(75, 27);
             this.btnConnect.TabIndex = 18;
@@ -244,12 +253,96 @@
             this.timLoad.Interval = 2000;
             this.timLoad.Tick += new System.EventHandler(this.timLoad_Tick);
             // 
+            // lblRestartCount
+            // 
+            this.lblRestartCount.AutoSize = true;
+            this.lblRestartCount.Location = new System.Drawing.Point(10, 542);
+            this.lblRestartCount.Name = "lblRestartCount";
+            this.lblRestartCount.Size = new System.Drawing.Size(75, 13);
+            this.lblRestartCount.TabIndex = 19;
+            this.lblRestartCount.Text = "Restart Count:";
+            this.lblRestartCount.Visible = false;
+            // 
+            // lblBeeMovie
+            // 
+            this.lblBeeMovie.AutoSize = true;
+            this.lblBeeMovie.Location = new System.Drawing.Point(614, 59);
+            this.lblBeeMovie.Name = "lblBeeMovie";
+            this.lblBeeMovie.Size = new System.Drawing.Size(61, 13);
+            this.lblBeeMovie.TabIndex = 20;
+            this.lblBeeMovie.Text = "Bee Movie:";
+            // 
+            // txtBeeMovie
+            // 
+            this.txtBeeMovie.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.txtBeeMovie.ForeColor = System.Drawing.Color.Red;
+            this.txtBeeMovie.Location = new System.Drawing.Point(684, 56);
+            this.txtBeeMovie.Name = "txtBeeMovie";
+            this.txtBeeMovie.ReadOnly = true;
+            this.txtBeeMovie.Size = new System.Drawing.Size(100, 20);
+            this.txtBeeMovie.TabIndex = 21;
+            this.txtBeeMovie.Text = "DISABLED";
+            this.txtBeeMovie.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // btnBeeMovieSwitch
+            // 
+            this.btnBeeMovieSwitch.Location = new System.Drawing.Point(796, 54);
+            this.btnBeeMovieSwitch.Name = "btnBeeMovieSwitch";
+            this.btnBeeMovieSwitch.Size = new System.Drawing.Size(75, 23);
+            this.btnBeeMovieSwitch.TabIndex = 22;
+            this.btnBeeMovieSwitch.Text = "Enable";
+            this.btnBeeMovieSwitch.UseVisualStyleBackColor = true;
+            this.btnBeeMovieSwitch.Click += new System.EventHandler(this.btnBeeMovieSwitch_Click);
+            // 
+            // txtBMTime
+            // 
+            this.txtBMTime.Location = new System.Drawing.Point(684, 82);
+            this.txtBMTime.Name = "txtBMTime";
+            this.txtBMTime.ReadOnly = true;
+            this.txtBMTime.Size = new System.Drawing.Size(100, 20);
+            this.txtBMTime.TabIndex = 23;
+            this.txtBMTime.Text = "Time";
+            this.txtBMTime.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtBMTime.Visible = false;
+            // 
+            // timBM
+            // 
+            this.timBM.Interval = 500;
+            this.timBM.Tick += new System.EventHandler(this.timBM_Tick);
+            // 
+            // timDisconnectCheck
+            // 
+            this.timDisconnectCheck.Enabled = true;
+            this.timDisconnectCheck.Interval = 5000;
+            this.timDisconnectCheck.Tick += new System.EventHandler(this.timDisconnectCheck_Tick);
+            // 
+            // timDCWait
+            // 
+            this.timDCWait.Interval = 2000;
+            this.timDCWait.Tick += new System.EventHandler(this.timDCWait_Tick);
+            // 
+            // btnExit
+            // 
+            this.btnExit.Location = new System.Drawing.Point(172, 512);
+            this.btnExit.Name = "btnExit";
+            this.btnExit.Size = new System.Drawing.Size(75, 27);
+            this.btnExit.TabIndex = 24;
+            this.btnExit.Text = "Exit";
+            this.btnExit.UseVisualStyleBackColor = true;
+            this.btnExit.Click += new System.EventHandler(this.btnClose_Click);
+            // 
             // mainForm
             // 
             this.AcceptButton = this.btnSubmit;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(930, 564);
+            this.Controls.Add(this.btnExit);
+            this.Controls.Add(this.txtBMTime);
+            this.Controls.Add(this.btnBeeMovieSwitch);
+            this.Controls.Add(this.txtBeeMovie);
+            this.Controls.Add(this.lblBeeMovie);
+            this.Controls.Add(this.lblRestartCount);
             this.Controls.Add(this.btnConnect);
             this.Controls.Add(this.txtUserRole);
             this.Controls.Add(this.lblRole);
@@ -300,5 +393,14 @@
         private System.Windows.Forms.Button btnConnect;
         private System.Windows.Forms.Timer timGetConsole;
         private System.Windows.Forms.Timer timLoad;
+        private System.Windows.Forms.Label lblRestartCount;
+        private System.Windows.Forms.Label lblBeeMovie;
+        private System.Windows.Forms.TextBox txtBeeMovie;
+        private System.Windows.Forms.Button btnBeeMovieSwitch;
+        private System.Windows.Forms.TextBox txtBMTime;
+        private System.Windows.Forms.Timer timBM;
+        private System.Windows.Forms.Timer timDisconnectCheck;
+        private System.Windows.Forms.Timer timDCWait;
+        private System.Windows.Forms.Button btnExit;
     }
 }

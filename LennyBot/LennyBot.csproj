@@ -115,6 +115,7 @@
     <Folder Include="memes\" />
     <Folder Include="pendingMemes\" />
     <Folder Include="tempImage\" />
+    <Folder Include="warImages\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="commandPics\eggbongo.jpg">
@@ -350,6 +351,7 @@
     <Content Include="bbmpics\9.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="TextFiles\wordList.txt" />
     <Content Include="TextFiles\TheBeeMovieScript.txt" />
   </ItemGroup>
   <ItemGroup>

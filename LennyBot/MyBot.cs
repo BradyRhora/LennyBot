@@ -17,10 +17,11 @@ namespace LennyBot
     class MyBot
     {
         System.Threading.Timer t = new System.Threading.Timer(TimerCallback, null, 0, 2000);
-        WebClient webClient = new WebClient();
+        static WebClient webClient = new WebClient();
         public static DiscordClient discord;
         static CommandService commands;
         static Random rdm = new Random();
+        ulong[] UserIDs = new ulong[100];
         #region Duel Vars
         string weapon;
         int damage;
@@ -43,15 +44,16 @@ namespace LennyBot
         static DateTime lennySleep3 = new DateTime(dateNow.Year, dateNow.Month, dateNow.Day, 21, 59, 50);
         #endregion
         #region Time Spans
-        TimeSpan fiveMin = new TimeSpan(0, 5, 0);
-        TimeSpan oneHour = new TimeSpan(1, 0, 0);
-        TimeSpan oneMin = new TimeSpan(0, 1, 0);
+        static TimeSpan fiveMin = new TimeSpan(0, 5, 0);
+        static TimeSpan oneHour = new TimeSpan(1, 0, 0);
+        static TimeSpan threeMin = new TimeSpan(0, 3, 0);
+        static TimeSpan oneMin = new TimeSpan(0, 1, 0);
         #endregion
         #region Bee Movie Vars
-        static TimeSpan sendDelay;
-        static DateTime sendTime;
-        static Channel beeChannel;
-        static bool bmOn = false;
+        public static TimeSpan sendDelay;
+        public static DateTime sendTime;
+        public static Channel beeChannel;
+        public static bool bmOn = false;
         static string[] beeScript = File.ReadAllLines("TextFiles/TheBeeMovieScript.txt");
         #endregion
         #region Poll Vars
@@ -67,9 +69,22 @@ namespace LennyBot
         static string pollTitle;
         static int pollTotalVotes;
         #endregion
+
+        #region Image War Vars
+        static bool warStarting = false;
+        static DateTime warStart;
+        static bool warOn;
+        static Channel warChannel;
+        static bool[] warUserEntered = new bool[100];
+        static DateTime warPrep = DateTime.Now;
+        static int warEntries = 0;
+        static ulong[] entryID = new ulong[100];
+        static string[] warWords = File.ReadAllLines("C:/Users/Owner/Documents/Visual Studio 2015/Projects/LennyBot/LennyBot/TextFiles/wordList.txt");
+        #endregion
+
         bool[] creatingRole = new bool[100];
         static Properties.Settings set = new Properties.Settings();
-        HtmlWeb web = new HtmlWeb();
+        static HtmlWeb web = new HtmlWeb();
         public static string consoleSend = null;
 
         public MyBot()
@@ -88,33 +103,33 @@ namespace LennyBot
             });
             commands = discord.GetService<CommandService>();
             #region Commands
-            helloCommand();
+            registerCommand();
+            buyCommand();
+            giveCoinsCommand();
+            profileCommand();
             sayCommand(null);
             susCommand();
+            shookCommand();
             askCommand();
             rollCommand();
-            bradyBunchMemeCommand();
-            shookCommand();
             talkCommand();
             setGameCommand();
-            duelCommand();
-            registerCommand();
-            profileCommand();
-            consoleCommand();
-            lotteryCommand();
-            buyCommand();
-            coinCommand();
+            imageCommand();
             kkkCommand();
+            lotteryCommand();
             roleCommand();
             beeMovieCommand();
             pollCommand();
             submitMemeCommand();
             memeCommand();
-            giveCoinsCommand();
-            eggBongoCommand();
             whatIsCommand();
-            testCommand();
-            imageCommand();
+            duelCommand();
+            bradyBunchMemeCommand();
+            coinCommand();
+            eggBongoCommand();
+            imageWarCommand();
+            consoleCommand();
+
             #endregion
 
             discord.ExecuteAndWait(async () =>
@@ -135,21 +150,6 @@ namespace LennyBot
             {
                 Console.WriteLine("Message recieved!");
             };
-        }
-
-
-
-        private void helloCommand()
-        {
-            commands.CreateCommand("hello")
-                .Description("Says hello!")
-                .Do(async (e) =>
-                {
-                    if (checkOwned(e.User, 1, e))
-                    {
-                        await e.Channel.SendMessage("Hi! ( ͡° ͜ʖ ͡°)");
-                    }
-                });
         }
 
         private void sayCommand(string input)
@@ -529,6 +529,7 @@ namespace LennyBot
                            set.users[i] = e.User.Name;
                            set.coins[i] = 10;
                            set.owned[i] = set.users[i];
+                           UserIDs[i] = e.User.Id;
                            set.Save();
                            consoleSend = $"{e.User.Name} has registered!";
                            Console.WriteLine(consoleSend);
@@ -636,6 +637,12 @@ namespace LennyBot
                    {
                        if (set.users[i] == "0") break;
                        consoleSend += Environment.NewLine + "USER: " + set.users[i] + $"[{i}]";
+                           User idFix = e.Channel.FindUsers(set.users[i], false).FirstOrDefault();
+                           if (idFix != null)
+                           {
+                               set.userID[i] = (long)idFix.Id;
+                           }
+                       consoleSend += Environment.NewLine + "ID: " + set.userID[i];
                        consoleSend += Environment.NewLine + "COINS: " + set.coins[i];
                        consoleSend += Environment.NewLine + "OWNED COMMANDS: " + set.owned[i];
                        consoleSend += Environment.NewLine + "------------------";
@@ -658,7 +665,7 @@ namespace LennyBot
                    //}
                    //consoleSend += Environment.NewLine + $"Most Lenny Coins: {mostCoins} with {mostCoinsInt} Lenny Coins!";
                });
-        }
+        } //########################
 
         private void lotteryCommand()
         {
@@ -919,7 +926,6 @@ namespace LennyBot
             commands.CreateCommand("beeMovie")
                 .Alias(new string[] { "bm" })
                 .Description("Sends random lines from BeeMovieScript.txt at random intervals in this chat.")
-                .Parameter("add / del",ParameterType.Multiple)
                 .Do(async (e) =>
                {
                    if (checkOwned(e.User, 13, e))
@@ -930,6 +936,7 @@ namespace LennyBot
                            sendDelay = new TimeSpan(0,0,1);
                            sendTime = DateTime.Now + sendDelay;
                            beeChannel = e.Channel;
+                           mainForm.bmRemaining = DateTime.Now - sendTime;
                            /*set.*/bmOn = true;
                        }
                        else
@@ -1216,16 +1223,6 @@ namespace LennyBot
                });
         }
 
-        private void testCommand()
-        {
-            commands.CreateCommand("test")
-                .Description("Used when testing out Discord.NET code! Ignore!")
-                .Do(async (e) =>
-               {
-                   await e.Channel.SendMessage($"Nothing to test.");
-               });
-        }
-
         private void imageCommand()
         {
             commands.CreateCommand("image")
@@ -1255,6 +1252,59 @@ namespace LennyBot
                });
         } //make it send big pics you slut
         
+        private void imageWarCommand()
+        {
+            commands.CreateCommand("imageWar")
+                .Alias(new string[] { "iw" })
+                .Description("The coolest and most hip game out there now! Players are assigned random images and must compete against other players in an... IMAGE WAR! *( ͡° ͜ʖ ͡°)* " + Environment.NewLine +
+                        "It is recommended to do this while in voice chat for easy, quick, choice explanations and more fun.")
+                .Parameter("create/join/vote", ParameterType.Required)
+                .Parameter("choice",ParameterType.Optional)
+                .Do(async (e) =>
+               {
+                   if (GetUserID(e.User) == -1)
+                   {
+                       await e.Channel.SendMessage("Please make sure you're registered! ( ͡° ʖ̯ ͡°)");
+                   }
+                   else
+                   {
+                       int userID = GetUserID(e.User);
+                       string param = e.GetArg("create/join/vote");
+
+                       if (param == "create")
+                       {
+                           if (e.User.Id == 108312797162541056)
+                           {
+                               if (!warStarting)
+                               {
+                                   await e.Channel.SendMessage("An Image War will begin in 5 minutes! Join with `.iw join`!");
+                                   warStart = DateTime.Now + new TimeSpan(0,0,5); //change to 5 min
+                                   warStarting = true;
+                                   warChannel = e.Channel;
+                               }
+                               else await e.Channel.SendMessage("There is already a war on! ( ͡° ʖ̯ ͡°)");
+                           }
+                           else await e.Channel.SendMessage("Only Brady can start Image Wars. ( ͡° ͜ʖ ͡°)");
+                       }
+                       else if (param == "join")
+                       {
+                           if (warStarting)
+                           {
+                               warUserEntered[userID] = true;
+                               warEntries++;
+                               entryID[warEntries] = (ulong)set.userID[userID];
+                               await e.Channel.SendMessage($"{e.User.Name} has joined the Image War!");
+                           }
+                           else if (warOn) await e.Channel.SendMessage("It is too late to join the Image War! Wait for the next one.");
+                           else await e.Channel.SendMessage("There is no Image War happening right now!");
+                       }
+                       else if (param == "vote") //toy with voting system first. We'll see. ( ͡° ͜ʖ ͡°)
+                       {
+
+                       }
+                   }
+               });
+        } //do voting system
 
         //      Command ID's:      |      Other Item ID's
         //                         |
@@ -1277,7 +1327,7 @@ namespace LennyBot
 
 
 
-        #region Cool Functions
+        #region Cool Functions and Timer
 
         private bool checkOwned(User user, int id, CommandEventArgs e)
         {
@@ -1408,7 +1458,7 @@ namespace LennyBot
             {
                 if (DateTime.Now > sendTime)
                 {
-                    beeChannel.SendMessage(beeScript[rdm.Next(beeScript.Length)]);
+                    beeChannel.SendTTSMessage(beeScript[rdm.Next(beeScript.Length)]);
                     sendDelay = new TimeSpan(rdm.Next(1), rdm.Next(60), rdm.Next(60));
                     sendTime = DateTime.Now + sendDelay;
                 }
@@ -1437,8 +1487,55 @@ namespace LennyBot
                 pollChannel.SendMessage(displayPoll() + "```");
             }
             #endregion
-            
 
+            #region Image War
+            if (warStarting && DateTime.Now > warStart)
+            {
+                warChannel.SendMessage("The Image War has begun!" + Environment.NewLine + "You have three minutes to look over your images!");
+                warPrep = DateTime.Now + threeMin;
+                warStarting = false;
+                warOn = true;
+
+                for (int i = 1; i <= warEntries; i++) //holy FUCK test this jesus
+                {
+                    for (int a = 1; a <= 6; a++)
+                    {
+                        string link = "https://www.google.nl/search?tbm=isch&q=" + warWords[rdm.Next(warWords.Count())];
+                        var page = web.Load(link);
+                        var node = page.DocumentNode.SelectSingleNode("(//table[@class=\"images_table\"]//img)[1]/parent::a/@href");
+
+                        if (node != null)
+                        {
+                            string imageLink = node.InnerHtml;
+                            string imageLink2 = imageLink.Remove(0, imageLink.IndexOf("https"));
+                            string imageLink3 = imageLink2.Substring(0, imageLink2.IndexOf('"'));
+                            webClient.DownloadFile(imageLink3, $@"C:\Users\Owner\Documents\visual studio 2015\Projects\LennyBot\LennyBot\warImages\warImage{i}-{a}.jpg");
+                        }
+                        else Console.WriteLine($"Error finding image {i}-{a}. Fix me!");
+                    }
+                }
+
+                for (int u = 1; u <= warEntries; u++)
+                {
+                    User warUser = warChannel.GetUser(entryID[u]);
+                    warUser.SendMessage("Here are your images! (Wait a few seconds for them all to send)");
+                    for (int i = 1;i<=6;i++)
+                    {
+                        warUser.SendMessage($"Image {i}:");
+                        System.Threading.Thread.Sleep(1000);
+                        warUser.SendFile($@"C:\Users\Owner\Documents\visual studio 2015\Projects\LennyBot\LennyBot\warImages\warImage{u}-{i}.jpg");
+                        System.Threading.Thread.Sleep(1000);
+                    }
+                }
+                
+
+            }
+
+            //if (warOn && DateTime.Now > warPrep)
+            //{
+            
+            //}
+            #endregion
             set.Save();
             GC.Collect();
         }
@@ -1453,6 +1550,7 @@ namespace LennyBot
                 }
             }
             return -1;
+            //if -1 is returned, this means the user in not registered.
         }
 
         #endregion
@@ -1460,9 +1558,16 @@ namespace LennyBot
         private void Log(Object sender, LogMessageEventArgs e)
         {
             Console.WriteLine(e.Message);
-            discord.SetGame(set.setGame);
+            try
+            {
+                discord.SetGame(set.setGame);
+            }
+            catch (Exception a)
+            {
+                Console.WriteLine("Error setting game. Try doing it manually!");
+                Console.WriteLine(a.Message);
+            }
             consoleSend = e.Message;
-            //set.beeChannel = discord.FindServers("Brady Bunch").FirstOrDefault().FindChannels("theshittiestofposts", exactMatch: false).FirstOrDefault();
         }
 
         
@@ -1471,11 +1576,12 @@ namespace LennyBot
 
 
 //  REMEMBER: 
-//          Test consoleSend
-//          sync to github xxxx
+//          sync to github xxxxxx
 //          give people more reasons to use him
 //          Finish .duel system (X) Incomplete, add more random events and choices
 //          Add more to 'Profiles' (role, etc)
 //              Keep bein' cool ( ͡° ͜ʖ ͡°)
 //          fix .bm, set set.beeChannel properly (temp fixed)
-//          Actually fix stuff?????
+//          Actually fix stuff?????????????????!?!?!?!?!!!!?
+//          replace wordList.txt with an actual wordlist
+//          holy shit test out all of image war fuck me that's a lot damn girl
