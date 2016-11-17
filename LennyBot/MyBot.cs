@@ -1,5 +1,6 @@
 ﻿using Discord;
 using Discord.Commands;
+using Discord.Audio;
 
 using System;
 using System.Windows.Forms;
@@ -11,6 +12,9 @@ using System.Text;
 using System.Threading;
 using DuckDuckGo.Net;
 using HtmlAgilityPack;
+using System.Speech;
+using System.Speech.Synthesis;
+using NAudio;
 
 namespace LennyBot
 {
@@ -69,7 +73,6 @@ namespace LennyBot
         static string pollTitle;
         static int pollTotalVotes;
         #endregion
-
         #region Image War Vars
         static bool warStarting = false;
         static DateTime warStart;
@@ -102,6 +105,10 @@ namespace LennyBot
 
             });
             commands = discord.GetService<CommandService>();
+            discord.UsingAudio(x =>
+                {
+                    x.Mode = AudioMode.Both;
+                });
             #region Commands
             registerCommand();
             buyCommand();
@@ -1480,8 +1487,16 @@ namespace LennyBot
                         highestVote = i;
                     }
                 }
-                pollChannel.SendMessage("The poll has ended!" + Environment.NewLine +
-                    $"The winner is: `{pollOption[highestVote]}` with `{highestVotes}` votes!");
+
+                if (highestVote == -1)
+                {
+                    pollChannel.SendMessage("No one voted.");
+                }
+                else
+                {
+                    pollChannel.SendMessage("The poll has ended!" + Environment.NewLine +
+                        $"The winner is: `{pollOption[highestVote]}` with `{highestVotes}` votes!");
+                }
                 pollOn = false;
                 
                 pollChannel.SendMessage(displayPoll() + "```");
@@ -1585,3 +1600,4 @@ namespace LennyBot
 //          Actually fix stuff?????????????????!?!?!?!?!!!!?
 //          replace wordList.txt with an actual wordlist
 //          holy shit test out all of image war fuck me that's a lot damn girl
+//          Set up TALKING TO FREAKIN LENNY BOT YOOOo
