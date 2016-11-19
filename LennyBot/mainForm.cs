@@ -21,9 +21,11 @@ namespace LennyBot
         #region Variables
 
         List<Server> servers = new List<Server>();
+        List<Channel> vChannels = new List<Channel>();
         List<Channel> channels = new List<Channel>();
         List<User> users = new List<User>();
         Server selectedServer;
+        public static Channel selectedVChannel;
         Channel selectedChannel;
         public static TimeSpan bmRemaining = new TimeSpan();
         User selectedUser;
@@ -120,6 +122,15 @@ namespace LennyBot
                 cbxChannels.Items.Add(channels[i]);
             }
             cbxChannels.SelectedIndex = 0;
+
+            vChannels = selectedServer.VoiceChannels.ToList();
+
+            cbxVoiceChannels.Items.Clear();
+            for (int i = 0; i < vChannels.Count; i++)
+            {
+                cbxVoiceChannels.Items.Add(vChannels[i]);
+            }
+            cbxVoiceChannels.SelectedIndex = 0;
         }
 
         private void cbxChannels_SelectedIndexChanged(object sender, EventArgs e)
@@ -350,6 +361,18 @@ namespace LennyBot
         private void btnClose_Click(object sender, EventArgs e)
         {
             Application.Exit();
+        }
+
+        private void cbxVoiceChannels_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            selectedVChannel = vChannels[cbxVoiceChannels.SelectedIndex];
+        }
+
+        private void btnVConnect_Click(object sender, EventArgs e)
+        {
+            MyBot.ConnectVoice();
+
+            MyBot.IAudioClient.Join(selectedVChannel);
         }
     }
 }

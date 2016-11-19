@@ -59,6 +59,9 @@
             this.timDisconnectCheck = new System.Windows.Forms.Timer(this.components);
             this.timDCWait = new System.Windows.Forms.Timer(this.components);
             this.btnExit = new System.Windows.Forms.Button();
+            this.lblVoiceChannels = new System.Windows.Forms.Label();
+            this.cbxVoiceChannels = new System.Windows.Forms.ComboBox();
+            this.btnVConnect = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // txtConsole
@@ -71,20 +74,20 @@
             this.txtConsole.Name = "txtConsole";
             this.txtConsole.ReadOnly = true;
             this.txtConsole.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtConsole.Size = new System.Drawing.Size(553, 380);
+            this.txtConsole.Size = new System.Drawing.Size(553, 346);
             this.txtConsole.TabIndex = 0;
             // 
             // txtSubmit
             // 
             this.txtSubmit.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtSubmit.Location = new System.Drawing.Point(13, 400);
+            this.txtSubmit.Location = new System.Drawing.Point(13, 365);
             this.txtSubmit.Name = "txtSubmit";
             this.txtSubmit.Size = new System.Drawing.Size(472, 26);
             this.txtSubmit.TabIndex = 1;
             // 
             // btnSubmit
             // 
-            this.btnSubmit.Location = new System.Drawing.Point(491, 399);
+            this.btnSubmit.Location = new System.Drawing.Point(491, 364);
             this.btnSubmit.Name = "btnSubmit";
             this.btnSubmit.Size = new System.Drawing.Size(75, 27);
             this.btnSubmit.TabIndex = 2;
@@ -105,7 +108,7 @@
             // cbxServers
             // 
             this.cbxServers.FormattingEnabled = true;
-            this.cbxServers.Location = new System.Drawing.Point(198, 432);
+            this.cbxServers.Location = new System.Drawing.Point(198, 397);
             this.cbxServers.Name = "cbxServers";
             this.cbxServers.Size = new System.Drawing.Size(121, 21);
             this.cbxServers.TabIndex = 4;
@@ -114,7 +117,7 @@
             // cbxChannels
             // 
             this.cbxChannels.FormattingEnabled = true;
-            this.cbxChannels.Location = new System.Drawing.Point(198, 459);
+            this.cbxChannels.Location = new System.Drawing.Point(198, 424);
             this.cbxChannels.Name = "cbxChannels";
             this.cbxChannels.Size = new System.Drawing.Size(121, 21);
             this.cbxChannels.TabIndex = 5;
@@ -123,7 +126,7 @@
             // lblServer
             // 
             this.lblServer.AutoSize = true;
-            this.lblServer.Location = new System.Drawing.Point(151, 435);
+            this.lblServer.Location = new System.Drawing.Point(151, 400);
             this.lblServer.Name = "lblServer";
             this.lblServer.Size = new System.Drawing.Size(41, 13);
             this.lblServer.TabIndex = 6;
@@ -132,7 +135,7 @@
             // lblChannel
             // 
             this.lblChannel.AutoSize = true;
-            this.lblChannel.Location = new System.Drawing.Point(144, 462);
+            this.lblChannel.Location = new System.Drawing.Point(144, 427);
             this.lblChannel.Name = "lblChannel";
             this.lblChannel.Size = new System.Drawing.Size(49, 13);
             this.lblChannel.TabIndex = 7;
@@ -180,7 +183,7 @@
             // lblUsers
             // 
             this.lblUsers.AutoSize = true;
-            this.lblUsers.Location = new System.Drawing.Point(333, 435);
+            this.lblUsers.Location = new System.Drawing.Point(333, 400);
             this.lblUsers.Name = "lblUsers";
             this.lblUsers.Size = new System.Drawing.Size(37, 13);
             this.lblUsers.TabIndex = 12;
@@ -189,7 +192,7 @@
             // cbxUsers
             // 
             this.cbxUsers.FormattingEnabled = true;
-            this.cbxUsers.Location = new System.Drawing.Point(376, 432);
+            this.cbxUsers.Location = new System.Drawing.Point(376, 397);
             this.cbxUsers.Name = "cbxUsers";
             this.cbxUsers.Size = new System.Drawing.Size(190, 21);
             this.cbxUsers.TabIndex = 13;
@@ -198,7 +201,7 @@
             // lblCoins
             // 
             this.lblCoins.AutoSize = true;
-            this.lblCoins.Location = new System.Drawing.Point(334, 462);
+            this.lblCoins.Location = new System.Drawing.Point(334, 427);
             this.lblCoins.Name = "lblCoins";
             this.lblCoins.Size = new System.Drawing.Size(36, 13);
             this.lblCoins.TabIndex = 14;
@@ -206,7 +209,7 @@
             // 
             // txtCoins
             // 
-            this.txtCoins.Location = new System.Drawing.Point(376, 459);
+            this.txtCoins.Location = new System.Drawing.Point(376, 424);
             this.txtCoins.Name = "txtCoins";
             this.txtCoins.ReadOnly = true;
             this.txtCoins.Size = new System.Drawing.Size(190, 20);
@@ -214,7 +217,7 @@
             // 
             // txtUserRole
             // 
-            this.txtUserRole.Location = new System.Drawing.Point(376, 485);
+            this.txtUserRole.Location = new System.Drawing.Point(376, 450);
             this.txtUserRole.Multiline = true;
             this.txtUserRole.Name = "txtUserRole";
             this.txtUserRole.ReadOnly = true;
@@ -225,7 +228,7 @@
             // lblRole
             // 
             this.lblRole.AutoSize = true;
-            this.lblRole.Location = new System.Drawing.Point(333, 488);
+            this.lblRole.Location = new System.Drawing.Point(333, 453);
             this.lblRole.Name = "lblRole";
             this.lblRole.Size = new System.Drawing.Size(37, 13);
             this.lblRole.TabIndex = 16;
@@ -331,12 +334,43 @@
             this.btnExit.UseVisualStyleBackColor = true;
             this.btnExit.Click += new System.EventHandler(this.btnClose_Click);
             // 
+            // lblVoiceChannels
+            // 
+            this.lblVoiceChannels.AutoSize = true;
+            this.lblVoiceChannels.Location = new System.Drawing.Point(114, 453);
+            this.lblVoiceChannels.Name = "lblVoiceChannels";
+            this.lblVoiceChannels.Size = new System.Drawing.Size(79, 13);
+            this.lblVoiceChannels.TabIndex = 26;
+            this.lblVoiceChannels.Text = "Voice Channel:";
+            // 
+            // cbxVoiceChannels
+            // 
+            this.cbxVoiceChannels.FormattingEnabled = true;
+            this.cbxVoiceChannels.Location = new System.Drawing.Point(198, 451);
+            this.cbxVoiceChannels.Name = "cbxVoiceChannels";
+            this.cbxVoiceChannels.Size = new System.Drawing.Size(121, 21);
+            this.cbxVoiceChannels.TabIndex = 25;
+            this.cbxVoiceChannels.SelectedIndexChanged += new System.EventHandler(this.cbxVoiceChannels_SelectedIndexChanged);
+            // 
+            // btnVConnect
+            // 
+            this.btnVConnect.Location = new System.Drawing.Point(198, 478);
+            this.btnVConnect.Name = "btnVConnect";
+            this.btnVConnect.Size = new System.Drawing.Size(121, 23);
+            this.btnVConnect.TabIndex = 27;
+            this.btnVConnect.Text = "Connect Voice";
+            this.btnVConnect.UseVisualStyleBackColor = true;
+            this.btnVConnect.Click += new System.EventHandler(this.btnVConnect_Click);
+            // 
             // mainForm
             // 
             this.AcceptButton = this.btnSubmit;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(930, 564);
+            this.Controls.Add(this.btnVConnect);
+            this.Controls.Add(this.lblVoiceChannels);
+            this.Controls.Add(this.cbxVoiceChannels);
             this.Controls.Add(this.btnExit);
             this.Controls.Add(this.txtBMTime);
             this.Controls.Add(this.btnBeeMovieSwitch);
@@ -402,5 +436,8 @@
         private System.Windows.Forms.Timer timDisconnectCheck;
         private System.Windows.Forms.Timer timDCWait;
         private System.Windows.Forms.Button btnExit;
+        private System.Windows.Forms.Label lblVoiceChannels;
+        private System.Windows.Forms.ComboBox cbxVoiceChannels;
+        private System.Windows.Forms.Button btnVConnect;
     }
 }

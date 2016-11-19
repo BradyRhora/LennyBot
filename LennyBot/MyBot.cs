@@ -1336,6 +1336,18 @@ namespace LennyBot
 
         #region Cool Functions and Timer
 
+        public static void ConnectVoice()
+        {
+            var audio = discord.GetService<AudioService>()
+                    .Join(mainForm.selectedVChannel);
+
+        }
+
+        public void ConnectVChannel()
+        {
+            static IAudioClient client;
+            IAudioClient.Join(mainForm.selectedVChannel);
+        }
         private bool checkOwned(User user, int id, CommandEventArgs e)
         {
             if (e.User == e.Server.FindUsers("Brent Bott", false))
