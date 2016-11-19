@@ -1338,15 +1338,16 @@ namespace LennyBot
 
         public static void ConnectVoice()
         {
-            var audio = discord.GetService<AudioService>()
-                    .Join(mainForm.selectedVChannel);
+            var audio = discord.GetService<AudioService>();
+            audio.Join(mainForm.selectedVChannel);
+
+
 
         }
 
-        public void ConnectVChannel()
+        public static void ConnectVChannel()
         {
-            static IAudioClient client;
-            IAudioClient.Join(mainForm.selectedVChannel);
+            
         }
         private bool checkOwned(User user, int id, CommandEventArgs e)
         {

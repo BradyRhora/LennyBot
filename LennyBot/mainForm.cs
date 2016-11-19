@@ -372,7 +372,7 @@ namespace LennyBot
         {
             MyBot.ConnectVoice();
 
-            MyBot.IAudioClient.Join(selectedVChannel);
+            MyBot.ConnectVChannel();
         }
     }
 }
